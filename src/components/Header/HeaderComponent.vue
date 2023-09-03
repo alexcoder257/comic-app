@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="header-left">
       <div class="logo">
-        <img src="/src/assets/images/logo.png" alt="logo" />
+        <img src="/assets/images/logo.png" alt="logo" />
         <router-link to="/" class="title">MANGABOX</router-link>
       </div>
       <div class="list">

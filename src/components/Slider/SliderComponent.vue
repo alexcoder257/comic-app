@@ -39,8 +39,8 @@ const mockData = ref([
     id: "1",
     category: ["Adventure", "Dark fantasy", "Martial arts"],
     title: "DEMON SLAYER:\nKIMETSU NO YAIBA",
-    image: "/src/assets/images/slider1.png",
-    imageBackground: "/src/assets/images/sliderBackground1.jpg",
+    image: "/assets/images/slider1.png",
+    imageBackground: "/assets/images/sliderBackground1.jpg",
     description:
       "Who strives to become a demon slayer after his family was slaughtered and his younger sister Nezuko turned into a demon",
     chapter: "Ch.205",
@@ -49,8 +49,8 @@ const mockData = ref([
     id: "2",
     category: ["Action", "Adventure"],
     title: "ONE PIECE:\nHÀNH TRÌNH CỦA ACE",
-    image: "/src/assets/images/slider2.png",
-    imageBackground: "/src/assets/images/sliderBackground2.jpg",
+    image: "/assets/images/slider2.png",
+    imageBackground: "/assets/images/sliderBackground2.jpg",
     description:
       "Câu chuyện sẽ xoay quanh nhân vật Ace huyền thoại và niềm khao khát chinh phục kho báu One Piece cực kì mãnh liệt của anh.",
     chapter: "Ch.144",
@@ -59,8 +59,8 @@ const mockData = ref([
     id: "3",
     category: ["Dark fantasy", "Martial arts"],
     title: "CỬU VĨ HỒ LY:\nDOUJINSHI NARUSASU",
-    image: "/src/assets/images/slider3.png",
-    imageBackground: "/src/assets/images/sliderBackground3.jpg",
+    image: "/assets/images/slider3.png",
+    imageBackground: "/assets/images/sliderBackground3.jpg",
     description:
       "Một số ngoại truyện về con trai của naruto do Hamtruyen.com và na3d.sohagame.vn hợp tác sản xuất",
     chapter: "Ch.153",

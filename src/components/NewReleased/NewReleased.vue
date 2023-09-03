@@ -27,28 +27,28 @@ import Star from "@/assets/icons/Star.vue";
 const mockData = [
   {
     id: "1",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
     title: "ONE PIECE",
     chapter: "Chapter 1079: The Emperor's",
     rating: "4.3/5.0",
   },
   {
     id: "2",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
     title: "ONE PIECE",
     chapter: "Chapter 1079: The Emperor's",
     rating: "4.3/5.0",
   },
   {
     id: "3",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
     title: "ONE PIECE",
     chapter: "Chapter 1079: The Emperor's",
     rating: "4.3/5.0",
   },
   {
     id: "4",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
     title: "ONE PIECE",
     chapter: "Chapter 1079: The Emperor's",
     rating: "4.3/5.0",

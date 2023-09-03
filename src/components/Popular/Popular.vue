@@ -3,8 +3,8 @@
     <div class="header">
       <div class="title">EASY READ MANGA ANYWHERE AND ANYTIME</div>
       <div class="picture">
-        <img src="/src/assets/images/laptop.png" alt="img" />
-        <img src="/src/assets/images/iphone.png" alt="img" />
+        <img src="/assets/images/laptop.png" alt="img" />
+        <img src="/assets/images/iphone.png" alt="img" />
       </div>
     </div>
     <div class="content">
@@ -46,56 +46,56 @@ const mockData = [
     name: "CHAINSAW MAN",
     author: "TATSUKI FUJIMOTO",
     view: "946,341",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "2",
     name: "ONE PIECE",
     author: "EIICHIRO ODA",
     view: "728,494",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "3",
     name: "BORUTO NEXT GEN",
     author: "MASASHI KISHIMOTO",
     view: "703,708",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "4",
     name: "JUJUTSU KAISEN",
     author: "GEGE AKUTAMI",
     view: "456,645",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "5",
     name: "MY HERO ACADEMIA",
     author: "KOHEI HORIKOSHI",
     view: "437,345",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "6",
     name: "SPY X FAMILY",
     author: "TATSUYA ENDO",
     view: "946,341",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "7",
     name: "BLACK CLOVER",
     author: "YUKI TABATA",
     view: "330,637",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "8",
     name: "DRAGON BALL SUPER",
     author: "AKIRA TORIYAMA",
     view: "311,722",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
 ];
 </script>

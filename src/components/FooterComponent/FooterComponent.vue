@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="logo">
       <div class="image">
-        <img src="/src/assets/images/logo.png" alt="img" />
+        <img src="/assets/images/logo.png" alt="img" />
       </div>
       <div class="title">MANGABOX</div>
     </div>

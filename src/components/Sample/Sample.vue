@@ -23,19 +23,19 @@ const props = withDefaults(
 const listCommic = [
   {
     id: "1",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "2",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "3",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
   {
     id: "4",
-    imgURL: "/src/assets/images/sliderBackground1.jpg",
+    imgURL: "/assets/images/sliderBackground1.jpg",
   },
 ];
 </script>

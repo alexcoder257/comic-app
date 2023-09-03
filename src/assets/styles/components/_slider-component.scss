@@ -104,16 +104,16 @@
 }
 .before-0 {
   &::before {
-    background-image: url("@/assets/images/sliderBackground1.jpg");
+    background-image: url("/assets/images/sliderBackground1.jpg");
   }
 }
 .before-1 {
   &::before {
-    background-image: url("@/assets/images/sliderBackground2.jpg");
+    background-image: url("/assets/images/sliderBackground2.jpg");
   }
 }
 .before-2 {
   &::before {
-    background-image: url("@/assets/images/sliderBackground3.jpg");
+    background-image: url("/assets/images/sliderBackground3.jpg");
   }
 }
