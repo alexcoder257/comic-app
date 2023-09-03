@@ -1,0 +1,60 @@
+@import "../base/variables";
+
+.release-container {
+  height: 500px;
+  background-color: $bg;
+  padding: 32px 9%;
+  overflow: hidden;
+  .title {
+    margin-top: 12px;
+    margin-bottom: 32px;
+    font-weight: 600;
+    font-size: 32px;
+    color: #fff;
+    font-style: italic;
+  }
+  .commic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    .commic-item {
+      .picture {
+        margin-bottom: 8px;
+        img {
+          width: 160px;
+          height: 240px;
+        }
+      }
+      .name {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .chapter {
+        color: #999;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        .rate {
+          p {
+            margin-top: 3px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 32px;
+          }
+        }
+        .icon {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

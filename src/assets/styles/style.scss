@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+// Base
+@import "./base/mixin";
+@import "./base/reset";
+@import "./base/typography";
+@import "./base/variables";
+
+// Layout
+@import "./layout/layout.scss"; // Component and modules
+
+// Pages

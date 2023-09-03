@@ -1,0 +1,26 @@
+@import "../base/variables";
+
+.sample-container {
+  height: 415px;
+  background-color: $bg;
+  padding: 32px 9%;
+  overflow: hidden;
+  .title {
+    margin-top: 12px;
+    margin-bottom: 32px;
+    font-weight: 600;
+    font-size: 32px;
+    color: #fff;
+    font-style: italic;
+  }
+  .list-commic {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: center;
+    img {
+      width: 160px;
+      height: 240px;
+    }
+  }
+}
