@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 const HomePage = () => import("@/views/home/HomePage.vue");
-const AboutPage = () => import("@/views/about/AboutPage.vue");
+const DetailPage = () => import("@/views/detail/DetailPage.vue");
+const ReadPage = () => import("@/views/read/ReadPage.vue");
 
 const routes = [
   {
@@ -12,11 +13,19 @@ const routes = [
     },
   },
   {
-    path: "/about",
-    component: AboutPage,
-    name: "AboutPage",
+    path: "/detail",
+    component: DetailPage,
+    name: "DetailPage",
     meta: {
       layout: "default",
+    },
+  },
+  {
+    path: "/read",
+    component: ReadPage,
+    name: "ReadPage",
+    meta: {
+      layout: "simple",
     },
   },
 ];

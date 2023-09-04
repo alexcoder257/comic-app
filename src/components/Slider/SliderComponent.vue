@@ -16,7 +16,7 @@
         {{ mockData[currentIndex].description }}
       </div>
       <div class="controler">
-        <div class="read-btn">Read now</div>
+        <div class="read-btn" @click="handleReadComic">Read now</div>
         <div class="chapter">
           <div class="icon">
             <chapter :color="`#fff`" :width="`24`" />
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import Chapter from "@/assets/icons/Chapter.vue";
 import { onUnmounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 const currentIndex = ref(0);
 let pollingInterval = 0;
 
@@ -66,6 +67,12 @@ const mockData = ref([
     chapter: "Ch.153",
   },
 ]);
+
+const route = useRouter();
+
+const handleReadComic = () => {
+  route.push({ name: "DetailPage" });
+};
 
 pollingInterval = setInterval(() => {
   if (currentIndex.value < mockData.value.length - 1) {
