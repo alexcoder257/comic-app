@@ -2,18 +2,23 @@
   <div class="release-container">
     <div class="title">NEW RELEASED COMIC</div>
     <div class="commic-container">
-      <div v-for="item in mockData" :key="item.id" class="commic-item">
+      <div
+        v-for="item in listComic"
+        :key="item.id"
+        class="commic-item"
+        @click="handleViewDetail(item)"
+      >
         <div class="picture">
-          <img :src="item.imgURL" alt="picture" />
+          <img :src="item.thumbnail" alt="picture" />
         </div>
         <div class="name">{{ item.title }}</div>
-        <div class="chapter">{{ item.chapter }}</div>
+        <div class="chapter">Cập nhật: {{ item.updated_at }}</div>
         <div class="rating">
           <div class="icon">
-            <Star :width="'14'" :color="'#eded20'" />
+            <eyes :width="'14'" :color="'#2ecc71'" />
           </div>
           <div class="rate">
-            <p>{{ item.rating }}</p>
+            <p>{{ formatNumber(item.total_views) }}</p>
           </div>
         </div>
       </div>
@@ -22,38 +27,53 @@
 </template>
 
 <script setup lang="ts">
-import Star from "@/assets/icons/Star.vue";
+// import Star from "@/assets/icons/Star.vue";
+import Eyes from "@/assets/icons/Eyes.vue";
+import { stringify } from "qs";
+import { computed, onMounted, ref } from "vue";
+import { STATUS } from "@/constants/ComicConstants";
+import { getNewComic } from "@/service/apiComic";
+import { useLoadingStore } from "@/store/loading";
+import store from "@/store";
+import { formatNumber } from "@/utils/format";
+import { useRouter } from "vue-router";
 
-const mockData = [
-  {
-    id: "1",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-    title: "ONE PIECE",
-    chapter: "Chapter 1079: The Emperor's",
-    rating: "4.3/5.0",
-  },
-  {
-    id: "2",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-    title: "ONE PIECE",
-    chapter: "Chapter 1079: The Emperor's",
-    rating: "4.3/5.0",
-  },
-  {
-    id: "3",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-    title: "ONE PIECE",
-    chapter: "Chapter 1079: The Emperor's",
-    rating: "4.3/5.0",
-  },
-  {
-    id: "4",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-    title: "ONE PIECE",
-    chapter: "Chapter 1079: The Emperor's",
-    rating: "4.3/5.0",
-  },
-];
+const listComic = ref();
+
+const { startProgress, stopProgress } = useLoadingStore(store);
+
+const route = useRouter();
+
+const pagination = ref({
+  page: 1,
+  status: STATUS.ALL,
+});
+
+const queryString = computed(() =>
+  stringify(
+    {
+      ...pagination.value,
+    },
+    {
+      arrayFormat: "comma",
+    }
+  )
+);
+
+const fetchData = async () => {
+  startProgress();
+  const res = await getNewComic(queryString.value);
+  stopProgress();
+  listComic.value = res.comics;
+};
+
+onMounted(() => {
+  fetchData();
+});
+
+const handleViewDetail = (item: any) => {
+  route.push({ name: "DetailPage", params: { id: item.id } });
+};
 </script>
 
 <style lang="scss" scoped>

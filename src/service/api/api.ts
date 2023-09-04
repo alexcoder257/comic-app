@@ -2,19 +2,17 @@ import axios, { AxiosRequestConfig } from "axios";
 import { HttpStatusCode } from "@/service/api/types";
 import envs from "@/constants/envs";
 
-// const baseRoot = `${getCompanyPath() ? "/" + getCompanyPath() : null}`;
-
 const baseURL = envs.API_HOST;
 
 const apiClient = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false,
   responseType: "json",
   timeout: 20000,
 });
 const apiClientDownload = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false,
 });
 
 const defaultHeaders = {

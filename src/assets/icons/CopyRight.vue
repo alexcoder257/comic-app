@@ -2,7 +2,7 @@
   <svg
     xmlns="http://www.w3.org/2000/svg"
     :width="props.width"
-    :height="props.height"
+    height="32"
     viewBox="0 0 1024 1024"
   >
     <path
@@ -17,12 +17,10 @@ const props = withDefaults(
   defineProps<{
     color: string;
     width: string;
-    height: string;
   }>(),
   {
     color: "red",
     width: "32",
-    height: "32",
   }
 );
 </script>

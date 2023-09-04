@@ -7,6 +7,7 @@
 @import "./base/variables";
 
 // Layout
-@import "./layout/layout.scss"; // Component and modules
+@import "./layout/layout.scss";
 
-// Pages
+// Component and modules
+@import "./components/loading-spinner";

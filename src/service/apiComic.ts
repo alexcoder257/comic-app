@@ -55,7 +55,7 @@ export function getComicChapter(payload: any) {
 
 export function getSingleChapter(payload: any) {
   return get(
-    `${ApiConstants.ComicSingleChapter}/${payload.commicId}/chapters/${payload.chapterId}`
+    `${ApiConstants.ComicSingleChapter}/${payload.comicId}/chapters/${payload.chapterId}`
   );
 }
 

@@ -1,14 +1,17 @@
 @import "../base/variables";
 
 .read-container {
+  background-color: #0e0e0e;
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   .content {
-    width: 100vw;
-    height: 100vh;
+    max-width: 1200px;
+    background-color: #0e0e0e;
     img {
       width: 100%;
+      margin-bottom: -2px;
     }
   }
   .nav-bar-bottom {
@@ -59,6 +62,8 @@
         width: 100%;
         background-color: #999;
         border-radius: 4px;
+        max-height: 250px;
+        overflow-y: scroll;
         cursor: pointer;
         p {
           padding: 0 12px;
@@ -67,6 +72,18 @@
             background-color: $primary;
             opacity: 0.8;
           }
+        }
+        &::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        &::-webkit-scrollbar-track {
+          width: 6px;
+          height: 6px;
+          background-color: #e0e0e0;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #828282;
         }
       }
     }
@@ -132,6 +149,8 @@
         width: 100%;
         background-color: #999;
         border-radius: 4px;
+        max-height: 250px;
+        overflow-y: scroll;
         cursor: pointer;
         p {
           padding: 0 12px;
@@ -140,6 +159,18 @@
             background-color: $primary;
             opacity: 0.8;
           }
+        }
+        &::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        &::-webkit-scrollbar-track {
+          width: 6px;
+          height: 6px;
+          background-color: #e0e0e0;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #828282;
         }
       }
     }
@@ -159,11 +190,12 @@
   }
   .scroll-top {
     position: fixed;
-    bottom: 64px;
-    right: 32px;
+    bottom: 72px;
+    right: 64px;
     cursor: pointer;
+    opacity: 0.5;
     &:hover {
-      opacity: 0.8;
+      opacity: 1;
     }
   }
 }

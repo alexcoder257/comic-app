@@ -1,0 +1,60 @@
+$offset: 87;
+$duration: 0.8s;
+
+.loading-spinner {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    // background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+
+    &-circle {
+      width: 62px;
+      height: 62px;
+      box-shadow: inset 0 0 0 8px;
+      color: $green-light1;
+      border-radius: 50%;
+
+      .path {
+        stroke: $primary;
+        stroke-dasharray: $offset;
+        stroke-dashoffset: 0;
+        transform-origin: center;
+        animation: dash $duration ease-in infinite;
+      }
+    }
+  }
+
+  &.loading {
+    display: block;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+    transform: rotate(-90deg);
+  }
+  50% {
+    stroke-dashoffset: calc($offset/4);
+    transform: rotate(-90deg);
+  }
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotate(270deg);
+  }
+}

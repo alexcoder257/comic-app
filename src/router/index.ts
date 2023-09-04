@@ -13,7 +13,7 @@ const routes = [
     },
   },
   {
-    path: "/detail",
+    path: "/:id",
     component: DetailPage,
     name: "DetailPage",
     meta: {
@@ -21,7 +21,7 @@ const routes = [
     },
   },
   {
-    path: "/read",
+    path: "/:id/:chapterId",
     component: ReadPage,
     name: "ReadPage",
     meta: {

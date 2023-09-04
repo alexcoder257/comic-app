@@ -1,14 +1,19 @@
 <template>
-  <div class="read-container" @scroll="handleScroll">
+  <div v-if="comicData" class="read-container" @scroll="handleScroll">
     <div v-if="!isScroll" class="nav-bar-top">
       <div class="icon-home" @click="handleRedirect">
         <home :width="'24'" :color="'#fff'" />
       </div>
-      <div class="icon-back">
+      <div class="icon-back" @click="handleBackChapter">
         <arrow-left :width="'24'" :color="'#fff'" />
       </div>
       <div class="chapter">
-        <input type="text" placeholder="Chapter ..." value="Chapter 1" />
+        <input
+          type="text"
+          placeholder="Chapter ..."
+          disabled
+          :value="chapterName ? chapterName : 'Chapter 99'"
+        />
         <div class="icon">
           <arrow-up
             v-if="isShow"
@@ -28,30 +33,40 @@
           v-click-outside="handleClickOutside"
           class="dropdown"
         >
-          <p>Chapter 1</p>
-          <p>Chapter 2</p>
-          <p>Chapter 3</p>
-          <p>Chapter 4</p>
-          <p>Chapter 5</p>
-          <p>Chapter 6</p>
+          <p
+            v-for="chapter in comicData.chapters"
+            :key="chapter.id"
+            @click="handleChooseChapter(chapter.id)"
+          >
+            {{ chapter.name }}
+          </p>
         </div>
       </div>
-      <div class="icon-next">
+      <div class="icon-next" @click="handleNextChapter">
         <arrow-right :width="'24'" :color="'#fff'" />
       </div>
     </div>
     <div class="content">
-      <img src="/assets/images/sliderBackground3.jpg" alt="img" />
+      <img
+        v-for="(item, idx) in comicData.images"
+        :key="idx"
+        :src="item.src"
+        alt="img"
+      />
     </div>
     <div v-if="isScroll" class="nav-bar-bottom">
       <div class="icon-home" @click="handleRedirect">
         <home :width="'24'" :color="'#fff'" />
       </div>
-      <div class="icon-back">
+      <div class="icon-back" @click="handleBackChapter">
         <arrow-left :width="'24'" :color="'#fff'" />
       </div>
       <div class="chapter">
-        <input type="text" placeholder="Chapter ..." value="Chapter 1" />
+        <input
+          type="text"
+          placeholder="Chapter ..."
+          :value="chapterName ? chapterName : 'Chapter 99'"
+        />
         <div class="icon">
           <arrow-up
             v-if="isShow"
@@ -71,15 +86,16 @@
           v-click-outside="handleClickOutside"
           class="dropdown"
         >
-          <p>Chapter 1</p>
-          <p>Chapter 2</p>
-          <p>Chapter 3</p>
-          <p>Chapter 4</p>
-          <p>Chapter 5</p>
-          <p>Chapter 6</p>
+          <p
+            v-for="chapter in comicData.chapters"
+            :key="chapter.id"
+            @click="handleChooseChapter(chapter.id)"
+          >
+            {{ chapter.name }}
+          </p>
         </div>
       </div>
-      <div class="icon-next">
+      <div class="icon-next" @click="handleNextChapter">
         <arrow-right :width="'24'" :color="'#fff'" />
       </div>
     </div>
@@ -97,22 +113,49 @@ import ArrowDown from "@/assets/icons/ArrowDown.vue";
 import ArrowUp from "@/assets/icons/ArrowUp.vue";
 import ScrollTop from "@/assets/icons/ScrollTop.vue";
 import { useToggle } from "@/hooks/useToggle";
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useLoadingStore } from "@/store/loading";
+import store from "@/store";
+import { getSingleChapter } from "@/service/apiComic";
 
 const { isShow, toggle, close } = useToggle();
-const route = useRouter();
+const { startProgress, stopProgress } = useLoadingStore(store);
+const router = useRouter();
+const route = useRoute();
 const isScroll = ref(false);
+const id = ref(route.params.id);
+const chapterId = ref(route.params.chapterId);
+const comicData = ref();
+const chapterName = ref();
+
 const handleClickOutside = () => {
   toggle();
 };
 
+const fetchData = async () => {
+  startProgress();
+  try {
+    const res = await getSingleChapter({
+      comicId: id.value,
+      chapterId: chapterId.value,
+    });
+    comicData.value = res;
+    chapterName.value = res.chapter_name;
+  } catch (error) {
+    throw new Error();
+  } finally {
+    stopProgress();
+  }
+};
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+  fetchData();
 });
 
 const handleRedirect = () => {
-  route.push({ name: "HomePage" });
+  router.push({ name: "HomePage" });
 };
 
 const handleScrollTop = () => {
@@ -121,23 +164,55 @@ const handleScrollTop = () => {
 
 const handleScroll = () => {
   let lastScrollTop = 0;
-  let lastScrollBottom = 0;
   const scrollTop = window.scrollY;
-  const scrollBottom = window.scrollX;
   if (scrollTop > lastScrollTop) {
-    console.log("he");
     isScroll.value = false;
   } else {
-    console.log("aae");
     isScroll.value = true;
   }
-  if (lastScrollTop != 0) {
-    isScroll.value = true;
-  }
-  lastScrollBottom = scrollBottom;
   lastScrollTop = scrollTop;
+};
 
-  console.log(window);
+watch(
+  () => chapterId.value,
+  () => {
+    fetchData();
+  },
+  {
+    deep: true,
+  }
+);
+
+const handleChooseChapter = (id) => {
+  chapterId.value = id;
+  fetchData();
+  toggle();
+};
+
+const handleNextChapter = () => {
+  if (comicData.value && chapterId.value) {
+    const idx = comicData.value.chapters.findIndex(
+      (item) => item.id == chapterId.value
+    );
+    if (idx !== 0) {
+      chapterId.value = comicData.value.chapters[idx - 1].id;
+      fetchData();
+      handleScrollTop();
+    }
+  }
+};
+
+const handleBackChapter = () => {
+  if (comicData.value && chapterId.value) {
+    const idx = comicData.value.chapters.findIndex(
+      (item) => item.id == chapterId.value
+    );
+    if (idx !== comicData.value.chapters.length - 1) {
+      chapterId.value = comicData.value.chapters[idx + 1].id;
+      fetchData();
+      handleScrollTop();
+    }
+  }
 };
 </script>
 
