@@ -14,9 +14,31 @@
       <router-link to="/about">About</router-link>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Search favorite comic" />
+      <input
+        v-model="inputQuery"
+        type="text"
+        placeholder="Search favorite comic"
+      />
       <div class="icon">
         <search-icon :color="`#fff`" :width="`24`" />
+      </div>
+      <div
+        v-if="isShow && listComic"
+        class="dropdown"
+        v-click-outside="handleCloseDropdown"
+      >
+        <div v-for="item in listComic" :key="item.id" class="item">
+          <div class="thumbnail">
+            <img :src="item.thumbnail" alt="img" />
+          </div>
+          <div class="detail">
+            <div class="title">{{ item.title }}</div>
+            <div class="author">{{ item.authors.join(",") }}</div>
+            <div class="category">
+              {{ item.genres.join(", ") }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -25,69 +47,47 @@
 <script setup lang="ts">
 import ArrowDown from "@/assets/icons/ArrowDown.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
+import { computed, ref, watch } from "vue";
+import { getSearchSuggest } from "@/service/apiComic";
+import { useToggle } from "@/hooks/useToggle";
+import { stringify } from "qs";
+
+const { isShow, open, close } = useToggle();
+const inputQuery = ref("");
+
+const listComic = ref();
+
+const queryString = computed(() =>
+  stringify(
+    {
+      q: inputQuery.value,
+    },
+    {
+      arrayFormat: "comma",
+    }
+  )
+);
+
+const fetchData = async () => {
+  const res = await getSearchSuggest(queryString.value);
+  listComic.value = res;
+};
+
+watch(
+  () => inputQuery.value,
+  () => {
+    if (inputQuery.value !== "") {
+      fetchData();
+    }
+    open();
+  }
+);
+
+const handleCloseDropdown = () => {
+  close();
+};
 </script>
 
 <style lang="scss" scoped>
-.header-container {
-  width: 100vw;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #333;
-  padding: 0 9%;
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    .logo {
-      display: flex;
-      align-items: center;
-      img {
-        width: 40px;
-        margin-right: 12px;
-      }
-    }
-    .list {
-      display: flex;
-      align-items: center;
-      .icon {
-        font-size: 12px;
-      }
-    }
-  }
-  a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .search-bar {
-    background-color: #4f4e4e;
-    height: 42px;
-    width: 300px;
-    border-radius: 24px;
-    padding: 0 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    input {
-      border: none;
-      width: 80%;
-      background: #4f4e4e;
-      outline: none;
-      color: #fff;
-      &::placeholder {
-        color: blue;
-        font-size: 14px;
-        color: #fff;
-      }
-    }
-    .icon {
-      display: flex;
-      align-items: center;
-    }
-  }
-}
+@import "@/assets/styles/components/_header-component.scss";
 </style>

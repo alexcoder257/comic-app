@@ -1,5 +1,5 @@
 <template>
-  <div class="popular-container">
+  <div v-if="topComic" class="popular-container">
     <div class="header">
       <div class="title">EASY READ MANGA ANYWHERE AND ANYTIME</div>
       <div class="picture">
@@ -10,27 +10,32 @@
     <div class="content">
       <div class="title">TOP 8 POPULAR MANGA</div>
       <div class="commic-container">
-        <div v-for="(item, idx) in mockData" :key="item.id" class="commic-item">
+        <div
+          v-for="(item, idx) in topComic"
+          :key="item.id"
+          class="commic-item"
+          @click="handleChooseComic(item)"
+        >
           <div class="rank">{{ idx + 1 }}</div>
           <div class="avatar">
-            <img :src="item.imgURL" alt="img" />
+            <img :src="item.thumbnail" alt="img" />
           </div>
           <div class="name">
-            {{ item.name }}
+            {{ item.title }}
           </div>
           <div class="author">
             <div class="icon">
-              <eyes :width="'14'" :color="'#fff'" />
+              <heart :width="'14'" :color="'#fff'" />
             </div>
             <p>
-              {{ item.author }}
+              {{ formatNumber(item.followers) }}
             </p>
           </div>
           <div class="view">
             <div class="icon">
               <eyes :width="'14'" :color="'#fff'" />
             </div>
-            <p>{{ item.view }} Read times</p>
+            <p>{{ formatNumber(item.total_views) }} Read times</p>
           </div>
         </div>
       </div>
@@ -40,64 +45,51 @@
 
 <script setup lang="ts">
 import Eyes from "@/assets/icons/Eyes.vue";
-const mockData = [
-  {
-    id: "1",
-    name: "CHAINSAW MAN",
-    author: "TATSUKI FUJIMOTO",
-    view: "946,341",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "2",
-    name: "ONE PIECE",
-    author: "EIICHIRO ODA",
-    view: "728,494",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "3",
-    name: "BORUTO NEXT GEN",
-    author: "MASASHI KISHIMOTO",
-    view: "703,708",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "4",
-    name: "JUJUTSU KAISEN",
-    author: "GEGE AKUTAMI",
-    view: "456,645",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "5",
-    name: "MY HERO ACADEMIA",
-    author: "KOHEI HORIKOSHI",
-    view: "437,345",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "6",
-    name: "SPY X FAMILY",
-    author: "TATSUYA ENDO",
-    view: "946,341",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "7",
-    name: "BLACK CLOVER",
-    author: "YUKI TABATA",
-    view: "330,637",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-  {
-    id: "8",
-    name: "DRAGON BALL SUPER",
-    author: "AKIRA TORIYAMA",
-    view: "311,722",
-    imgURL: "/assets/images/sliderBackground1.jpg",
-  },
-];
+import { stringify } from "qs";
+import { useLoadingStore } from "@/store/loading";
+import store from "@/store";
+import { formatNumber } from "@/utils/format";
+import { STATUS } from "@/constants/ComicConstants";
+import { computed, onMounted, ref } from "vue";
+import { getTopFollow } from "@/service/apiComic";
+import Heart from "@/assets/icons/Heart.vue";
+import { useRouter } from "vue-router";
+const { startProgress, stopProgress } = useLoadingStore(store);
+
+const router = useRouter();
+
+const topComic = ref();
+
+const pagination = ref({
+  page: 1,
+  status: STATUS.ALL,
+});
+
+const queryString = computed(() =>
+  stringify(
+    {
+      ...pagination.value,
+    },
+    {
+      arrayFormat: "comma",
+    }
+  )
+);
+
+const fetchData = async () => {
+  startProgress();
+  const res = await getTopFollow(queryString.value);
+  stopProgress();
+  topComic.value = res.comics.slice(0, 8);
+};
+
+onMounted(() => {
+  fetchData();
+});
+
+const handleChooseComic = (item) => {
+  router.push({ name: "DetailPage", params: { id: item.id } });
+};
 </script>
 
 <style lang="scss" scoped>

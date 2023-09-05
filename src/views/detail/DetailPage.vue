@@ -76,7 +76,7 @@ import Heart from "@/assets/icons/Heart.vue";
 import Chapter from "@/assets/icons/Chapter.vue";
 import Chapter2 from "@/assets/icons/Chapter2.vue";
 import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { getDetailCommic } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import { formatNumber } from "@/utils/format";
@@ -108,12 +108,12 @@ watch(
     let counter = 0;
     let result = [];
     while (counter < totalChapter.value) {
-      if (totalChapter.value < counter + 10) {
+      if (totalChapter.value < counter + 50) {
         result.push(`${counter} - ${totalChapter.value - 1}`);
       } else {
-        result.push(`${counter} - ${counter + 10}`);
+        result.push(`${counter} - ${counter + 50}`);
       }
-      counter += 10;
+      counter += 50;
     }
     listChapterRange.value = result;
   }

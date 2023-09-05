@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import Chapter from "@/assets/icons/Chapter.vue";
 import { onUnmounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 const currentIndex = ref(0);
 let pollingInterval = 0;
 

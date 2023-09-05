@@ -2,7 +2,7 @@
 
 .detail-container {
   background-color: $bg;
-  padding: 48px 9%;
+  padding: 48px 9% 0 9%;
   width: 100%;
   .content {
     display: flex;
@@ -83,6 +83,7 @@
     }
   }
   .chapter {
+    margin-bottom: 32px;
     .title {
       display: flex;
       align-items: center;

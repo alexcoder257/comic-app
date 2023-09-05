@@ -68,8 +68,9 @@
       .commic-item {
         position: relative;
         min-width: 194px;
-        height: 400px;
+        margin-bottom: 24px;
         text-align: center;
+        cursor: pointer;
         .rank {
           width: 32px;
           height: 32px;

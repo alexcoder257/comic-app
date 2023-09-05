@@ -2,69 +2,80 @@
 
 .daily-content {
   background-color: $bg;
-  height: 950px;
-  padding: 48px 9%;
+  padding: 48px 9% 52px 9%;
   width: 100%;
   text-align: center;
-  .title {
-    margin-top: 12px;
-    margin-bottom: 32px;
-    font-weight: 600;
-    font-size: 32px;
-    color: #fff;
-    font-style: italic;
-  }
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 auto;
-    padding: 12px 18px;
-    background-color: #333;
-    border-radius: 32px;
-    margin-bottom: 48px;
-    width: 820px;
-    .nav-item {
-      padding: 12px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #fff;
-      &.active {
-        background-color: $primary;
-      }
-    }
-  }
-  .commic-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  .content {
     width: 850px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 12px 24px;
-    margin-bottom: 32px;
-    .commic-item {
-      min-width: 194px;
-      text-align: center;
-      .avatar {
-        width: 100%;
-        height: 250px;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+    overflow: hidden;
+    &.active {
+      height: 820px;
+    }
+    .title {
+      margin-top: 12px;
+      margin-bottom: 32px;
+      font-weight: 600;
+      font-size: 32px;
+      color: #fff;
+      font-style: italic;
+    }
+    .navbar {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 auto;
+      padding: 12px 18px;
+      background-color: #333;
+      border-radius: 32px;
+      margin-bottom: 48px;
+      width: 100%;
+      .nav-item {
+        padding: 12px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+        &.active {
+          background-color: $primary;
         }
       }
-      .name {
-        margin-top: 12px;
-        font-weight: 600;
-        font-size: 16px;
-        color: #fff;
-        font-style: italic;
-        margin-bottom: 8px;
+    }
+    .commic-container {
+      width: 850px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 24px 24px;
+      .commic-item {
+        min-width: 194px;
+        text-align: center;
+        cursor: pointer;
+        .avatar {
+          width: 100%;
+          height: 250px;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .name {
+          margin-top: 12px;
+          font-weight: 600;
+          font-size: 16px;
+          color: #fff;
+          font-style: italic;
+          margin-bottom: 8px;
+        }
       }
     }
   }
   .footer-btn {
+    cursor: pointer;
     width: 196px;
     color: #fff;
     font-weight: 500;
@@ -75,5 +86,13 @@
     background-color: $primary;
     padding: 12px 8px;
     border-radius: 24px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
