@@ -106,7 +106,7 @@ watch(
   () => totalChapter.value,
   () => {
     let counter = 0;
-    let result = [];
+    let result: string[] = [];
     while (counter < totalChapter.value) {
       if (totalChapter.value < counter + 50) {
         result.push(`${counter} - ${totalChapter.value - 1}`);
