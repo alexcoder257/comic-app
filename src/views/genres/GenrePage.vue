@@ -1,6 +1,6 @@
 <template>
-  <div class="release-container">
-    <div class="title">NEW RELEASED COMIC</div>
+  <div class="genre-container">
+    <div class="title">GENRES: {{ genreName }}</div>
     <div class="commic-container">
       <div
         v-for="item in listComic"
@@ -8,7 +8,7 @@
         class="commic-item"
         @click="handleViewDetail(item)"
       >
-        <div class="picture">
+        <div class="thumbnail">
           <img :src="item.thumbnail" alt="picture" />
         </div>
         <div class="name">{{ item.title }}</div>
@@ -23,6 +23,7 @@
         </div>
       </div>
     </div>
+    <footer-component />
   </div>
 </template>
 
@@ -32,37 +33,28 @@ import Eyes from "@/assets/icons/Eyes.vue";
 import { stringify } from "qs";
 import { computed, onMounted, ref } from "vue";
 import { STATUS } from "@/constants/ComicConstants";
-import { getNewComic } from "@/service/apiComic";
+import { getComicByGenre } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
 import { formatNumber } from "@/utils/format";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 
-const listComic = ref();
-
+const route = useRoute();
+const router = useRouter();
 const { startProgress, stopProgress } = useLoadingStore(store);
 
-const router = useRouter();
-
+const listComic = ref();
+const genreId = ref(route.params.genreId);
+const genreName = ref(route.params.genreName);
 const pagination = ref({
   page: 1,
   status: STATUS.ALL,
 });
 
-const queryString = computed(() =>
-  stringify(
-    {
-      ...pagination.value,
-    },
-    {
-      arrayFormat: "comma",
-    }
-  )
-);
-
 const fetchData = async () => {
   startProgress();
-  const res = await getNewComic(queryString.value);
+  const res = await getComicByGenre(genreId.value);
   stopProgress();
   listComic.value = res.comics;
 };
@@ -77,5 +69,5 @@ const handleViewDetail = (item: any) => {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/components/_new-released.scss";
+@import "@/assets/styles/page/_genre-page.scss";
 </style>

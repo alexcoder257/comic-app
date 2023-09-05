@@ -3,8 +3,8 @@
     <slider-component />
     <new-released />
     <category />
-    <sample :title="'WEEKLY SHONEN JUMP'" />
-    <sample :title="'JUMP PLUS'" />
+    <sample :title="'BOY COMICS'" />
+    <sample :title="'GIRL COMICS'" />
     <popular />
     <daily />
     <contact />

@@ -5,9 +5,10 @@
       <div class="bottom-container">
         <div
           v-for="item in genres"
-          :key="item.id"
           class="item"
+          :key="item.id"
           :style="`background-image: url(/assets/images/sliderBackground1.jpg)`"
+          @click="handleChooseGenre(item)"
         >
           <div class="name">
             {{ item.name }}
@@ -27,8 +28,11 @@ import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
 import { getAllGenres } from "@/service/apiComic";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const { startProgress, stopProgress } = useLoadingStore(store);
+
+const router = useRouter();
 
 const genres = ref();
 const fetchData = async () => {
@@ -45,6 +49,13 @@ onMounted(() => {
 const handleShowGenre = () => {
   const element = document.getElementById("list-genre");
   element?.classList.toggle("active");
+};
+
+const handleChooseGenre = (item) => {
+  router.push({
+    name: "GenrePage",
+    params: { genreId: item.id, genreName: item.name },
+  });
 };
 </script>
 

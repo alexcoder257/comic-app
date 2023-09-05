@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const HomePage = () => import("@/views/home/HomePage.vue");
 const DetailPage = () => import("@/views/detail/DetailPage.vue");
 const ReadPage = () => import("@/views/read/ReadPage.vue");
+const GenrePage = () => import("@/views/genres/GenrePage.vue");
 
 const routes = [
   {
@@ -26,6 +27,14 @@ const routes = [
     name: "ReadPage",
     meta: {
       layout: "simple",
+    },
+  },
+  {
+    path: "/:genreName/:genreId",
+    component: GenrePage,
+    name: "GenrePage",
+    meta: {
+      layout: "default",
     },
   },
 ];

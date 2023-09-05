@@ -1,13 +1,11 @@
 @import "../base/variables";
 
 .sample-container {
-  height: 415px;
   background-color: $bg;
   padding: 32px 9%;
-  overflow: hidden;
   .title {
     margin-top: 12px;
-    margin-bottom: 32px;
+    padding-bottom: 32px;
     font-weight: 600;
     font-size: 32px;
     color: #fff;
@@ -16,11 +14,46 @@
   .list-commic {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 32px;
     justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    .title-comic {
+      color: #fff;
+      margin-top: 12px;
+    }
     img {
-      width: 160px;
+      width: 180px;
       height: 240px;
+    }
+    .social {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      .view {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        .icon {
+          display: flex;
+        }
+        p {
+          color: #fff;
+          font-size: 14px;
+        }
+      }
+      .followers {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        .icon {
+          display: flex;
+        }
+        p {
+          color: #fff;
+          font-size: 14px;
+        }
+      }
     }
   }
 }

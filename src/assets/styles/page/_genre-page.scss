@@ -1,9 +1,8 @@
 @import "../base/variables";
 
-.release-container {
-  height: 500px;
+.genre-container {
   background-color: $bg;
-  padding: 32px 9%;
+  padding: 32px 9% 0 9%;
   overflow: hidden;
   .title {
     margin-top: 12px;
@@ -17,15 +16,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 40px;
-    overflow: hidden;
+    row-gap: 100px;
+    padding: 0 9% 100px 9%;
     .commic-item {
       cursor: pointer;
-      .picture {
+      width: 160px;
+      height: 240px;
+      .thumbnail {
         margin-bottom: 8px;
         img {
-          width: 160px;
+          width: 100%;
           height: 240px;
         }
       }
