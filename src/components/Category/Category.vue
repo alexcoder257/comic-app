@@ -1,95 +1,51 @@
 <template>
   <div class="category-container">
-    <div class="title">EXPLORE BY INTEREST</div>
-    <div class="top-container">
-      <div
-        v-for="item in categories[0]"
-        :key="item.id"
-        class="item"
-        :style="`background-image: url(${item.background})`"
-      >
-        <div class="name">
-          {{ item.name }}
-        </div>
-        <div class="description">
-          {{ item.description }}
-        </div>
-      </div>
-    </div>
-    <div class="bottom-container">
-      <div
-        v-for="item in categories[1]"
-        :key="item.id"
-        class="item"
-        :style="`background-image: url(${item.background})`"
-      >
-        <div class="name">
-          {{ item.name }}
-        </div>
-        <div class="description">
-          {{ item.description }}
+    <div id="list-genre" class="content active">
+      <div class="title">EXPLORE BY INTEREST</div>
+      <div class="bottom-container">
+        <div
+          v-for="item in genres"
+          :key="item.id"
+          class="item"
+          :style="`background-image: url(/assets/images/sliderBackground1.jpg)`"
+        >
+          <div class="name">
+            {{ item.name }}
+          </div>
+          <div class="description">
+            {{ item.description }}
+          </div>
         </div>
       </div>
     </div>
+    <div class="footer-btn" @click="handleShowGenre">Load more genres</div>
   </div>
 </template>
 
 <script setup lang="ts">
-const categories = [
-  [
-    {
-      id: "1",
-      name: "DRAMA ROMANCE",
-      description: "Enjoy the drama feel the sensation",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "2",
-      name: "ACTION-ADVENTURE",
-      description: "Feel the tension during the fight",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "3",
-      name: "MARTIAL ARTS",
-      description: "Discover wonders during your adventure",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "4",
-      name: "SPORTS",
-      description:
-        "Focuses on stories involving sports and other athletic and competitive",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-  ],
-  [
-    {
-      id: "5",
-      name: "COMEDY",
-      description: "Immerse, Imagine, and Inspire",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "6",
-      name: "HOROR",
-      description: "Enjoy the feel of fear and scare of Manga",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "7",
-      name: "FAMILY",
-      description: "Feel the harm about family Manga",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-    {
-      id: "8",
-      name: "SEE ALL GENRES MANGA",
-      description: "",
-      background: "/assets/images/sliderBackground1.jpg",
-    },
-  ],
-];
+import { useLoadingStore } from "@/store/loading";
+import store from "@/store";
+import { getAllGenres } from "@/service/apiComic";
+import { onMounted, ref } from "vue";
+
+const { startProgress, stopProgress } = useLoadingStore(store);
+
+const genres = ref();
+const fetchData = async () => {
+  startProgress();
+  const res = await getAllGenres();
+  stopProgress();
+  genres.value = res.slice().reverse();
+};
+
+onMounted(() => {
+  fetchData();
+});
+
+const handleShowGenre = () => {
+  const element = document.getElementById("list-genre");
+  element?.classList.toggle("active");
+};
 </script>
 
 <style lang="scss" scoped>
