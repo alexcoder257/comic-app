@@ -5,13 +5,16 @@
         <img src="/assets/images/logo.png" alt="logo" />
         <router-link to="/" class="title">MANGABOX</router-link>
       </div>
-      <div class="list">
-        <router-link to="/">Comic list</router-link>
-        <div class="icon">
-          <arrow-down :color="`#fff`" :width="`24`" />
+      <div class="list-genre">
+        <div
+          v-for="item in genres"
+          :key="item.id"
+          class="genre-item"
+          @click="handleChooseGenre(item)"
+        >
+          {{ item.name }}
         </div>
       </div>
-      <router-link to="/about">About</router-link>
     </div>
     <div class="search-bar">
       <input
@@ -27,7 +30,12 @@
         class="dropdown"
         v-click-outside="handleCloseDropdown"
       >
-        <div v-for="item in listComic" :key="item.id" class="item">
+        <div
+          v-for="item in listComic"
+          :key="item.id"
+          class="item"
+          @click="handleChooseComic(item)"
+        >
           <div class="thumbnail">
             <img :src="item.thumbnail" alt="img" />
           </div>
@@ -45,17 +53,37 @@
 </template>
 
 <script setup lang="ts">
-import ArrowDown from "@/assets/icons/ArrowDown.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
 import { computed, ref, watch } from "vue";
 import { getSearchSuggest } from "@/service/apiComic";
 import { useToggle } from "@/hooks/useToggle";
 import { stringify } from "qs";
+import { useRouter } from "vue-router";
 
 const { isShow, open, close } = useToggle();
 const inputQuery = ref("");
 
 const listComic = ref();
+
+const router = useRouter();
+
+const genres = [
+  {
+    id: "manga-112",
+    name: "Manga",
+    description: "Truyện tranh của Nhật Bản",
+  },
+  {
+    id: "manhua",
+    name: "Manhua",
+    description: "Truyện tranh của Trung Quốc",
+  },
+  {
+    id: "manhwa-11400",
+    name: "Manhwa",
+    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
+  },
+];
 
 const queryString = computed(() =>
   stringify(
@@ -84,6 +112,19 @@ watch(
 );
 
 const handleCloseDropdown = () => {
+  close();
+};
+
+const handleChooseGenre = (item) => {
+  console.log(item);
+  router.push({
+    name: "GenrePage",
+    params: { genreId: item.id, genreName: item.name },
+  });
+};
+
+const handleChooseComic = (item) => {
+  router.push({ name: "DetailPage", params: { id: item.id } });
   close();
 };
 </script>

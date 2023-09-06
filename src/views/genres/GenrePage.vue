@@ -31,7 +31,7 @@
 // import Star from "@/assets/icons/Star.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
 import { stringify } from "qs";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { STATUS } from "@/constants/ComicConstants";
 import { getComicByGenre } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
@@ -58,6 +58,15 @@ const fetchData = async () => {
   stopProgress();
   listComic.value = res.comics;
 };
+
+watch(
+  () => [route.params.genreId, route.params.genreName],
+  () => {
+    genreId.value = route.params.genreId;
+    genreName.value = route.params.genreName;
+    fetchData();
+  }
+);
 
 onMounted(() => {
   fetchData();

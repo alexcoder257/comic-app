@@ -37,41 +37,60 @@ let pollingInterval = 0;
 
 const mockData = ref([
   {
-    id: "1",
-    category: ["Adventure", "Dark fantasy", "Martial arts"],
-    title: "DEMON SLAYER:\nKIMETSU NO YAIBA",
+    id: "thanh-guom-diet-quy",
+    category: ["Drama", "Fantasy", "Historical", "Manga", "Shounen"],
+    title: "THANH GƯƠM DIỆT QUỶ",
     image: "/assets/images/slider1.png",
     imageBackground: "/assets/images/sliderBackground1.jpg",
     description:
-      "Who strives to become a demon slayer after his family was slaughtered and his younger sister Nezuko turned into a demon",
-    chapter: "Ch.205",
+      "Kimetsu no Yaiba – Tanjirou là con cả của gia đình vừa mất cha. Một ngày nọ, Tanjirou đến thăm thị trấn khác để bán than, khi đêm về cậu ở nghỉ tại nhà người khác thay vì về nhà vì lời đồn thổi về ác quỷ luôn rình mò gần núi vào buổi tối. Khi cậu về nhà vào ngày hôm sau, bị kịch đang đợi chờ cậu…",
+    chapter: "Gotouge Koyoharu",
   },
   {
-    id: "2",
-    category: ["Action", "Adventure"],
-    title: "ONE PIECE:\nHÀNH TRÌNH CỦA ACE",
+    id: "one-piece",
+    category: [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Drama",
+      "Fantasy",
+      "Shounen",
+      "Supernatural",
+    ],
+    title: "ONE PIECE",
     image: "/assets/images/slider2.png",
     imageBackground: "/assets/images/sliderBackground2.jpg",
     description:
-      "Câu chuyện sẽ xoay quanh nhân vật Ace huyền thoại và niềm khao khát chinh phục kho báu One Piece cực kì mãnh liệt của anh.",
-    chapter: "Ch.144",
+      "One Piece là câu truyện kể về Luffy và các thuyền viên của mình. Khi còn nhỏ, Luffy ước mơ trở thành Vua Hải Tặc. Cuộc sống của cậu bé thay đổi khi cậu vô tình có được sức mạnh có thể co dãn như cao su, nhưng đổi lại, cậu không bao giờ có thể bơi được nữa. Giờ đây, Luffy cùng những người bạn hải tặc của mình ra khơi tìm kiếm kho báu One Piece, kho báu vĩ đại nhất trên thế giới.",
+    chapter: "Eiichiro Oda",
   },
   {
-    id: "3",
-    category: ["Dark fantasy", "Martial arts"],
-    title: "CỬU VĨ HỒ LY:\nDOUJINSHI NARUSASU",
+    id: "naruto",
+    category: [
+      "Action",
+      "Adventure",
+      "Supernatural",
+      "Drama",
+      "Comedy",
+      "Shounen",
+      "Fantasy",
+    ],
+    title: "NARUTO",
     image: "/assets/images/slider3.png",
     imageBackground: "/assets/images/sliderBackground3.jpg",
     description:
-      "Một số ngoại truyện về con trai của naruto do Hamtruyen.com và na3d.sohagame.vn hợp tác sản xuất",
-    chapter: "Ch.153",
+      "Bộ truyện kể về cuộc hành trình đầy gian khổ với vô vàn khó khăn, thử thách của Naruto từ khi còn là một cậu bé tới khi trở thành một trong những nhẫn giả vĩ đại nhất. Không chỉ mô tả về một thế giới nhẫn giả huyền bí, Naruto còn mang trong nó nhiều ý nghĩa nhân sinh sâu sắc về tình bạn, tình đồng đội, tình yêu, ước mơ và hi vọng.",
+    chapter: "Kishimoto Masashi",
   },
 ]);
 
-const route = useRouter();
+const router = useRouter();
 
 const handleReadComic = () => {
-  route.push({ name: "DetailPage" });
+  router.push({
+    name: "DetailPage",
+    params: { id: mockData.value[currentIndex.value].id },
+  });
 };
 
 pollingInterval = setInterval(() => {

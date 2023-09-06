@@ -1,11 +1,11 @@
 <template>
   <div class="release-container">
     <div class="title">NEW RELEASED COMIC</div>
-    <div class="commic-container">
+    <div class="comic-container">
       <div
         v-for="item in listComic"
         :key="item.id"
-        class="commic-item"
+        class="comic-item"
         @click="handleViewDetail(item)"
       >
         <div class="picture">
@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-// import Star from "@/assets/icons/Star.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
 import { stringify } from "qs";
 import { computed, onMounted, ref } from "vue";

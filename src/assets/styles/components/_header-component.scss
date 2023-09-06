@@ -20,11 +20,16 @@
         margin-right: 12px;
       }
     }
-    .list {
+    .list-genre {
+      cursor: pointer;
       display: flex;
       align-items: center;
-      .icon {
-        font-size: 12px;
+      gap: 24px;
+      .genre-item {
+        color: #fff;
+        &:hover {
+          color: $primary;
+        }
       }
     }
   }
