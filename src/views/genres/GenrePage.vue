@@ -30,9 +30,7 @@
 <script setup lang="ts">
 // import Star from "@/assets/icons/Star.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
-import { stringify } from "qs";
-import { computed, onMounted, ref, watch } from "vue";
-import { STATUS } from "@/constants/ComicConstants";
+import { onMounted, ref, watch } from "vue";
 import { getComicByGenre } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
@@ -47,10 +45,6 @@ const { startProgress, stopProgress } = useLoadingStore(store);
 const listComic = ref();
 const genreId = ref(route.params.genreId);
 const genreName = ref(route.params.genreName);
-const pagination = ref({
-  page: 1,
-  status: STATUS.ALL,
-});
 
 const fetchData = async () => {
   startProgress();

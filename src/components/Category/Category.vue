@@ -1,5 +1,5 @@
 <template>
-  <div class="category-container">
+  <div v-if="genres" class="category-container">
     <div id="list-genre" class="content active">
       <div class="title">EXPLORE BY INTEREST</div>
       <div class="bottom-container">

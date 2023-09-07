@@ -2,31 +2,43 @@
   <div class="release-container">
     <div class="title">NEW RELEASED COMIC</div>
     <div class="comic-container">
-      <div
-        v-for="item in listComic"
-        :key="item.id"
-        class="comic-item"
-        @click="handleViewDetail(item)"
+      <swiper
+        :slides-per-view="6"
+        :space-between="20"
+        :centeredSlides="false"
+        :autoplay="{
+          delay: 3000,
+          disableOnInteraction: false,
+        }"
+        :navigation="true"
+        :modules="modules"
       >
-        <div class="picture">
-          <img :src="item.thumbnail" alt="picture" />
-        </div>
-        <div class="name">{{ item.title }}</div>
-        <div class="chapter">Cập nhật: {{ item.updated_at }}</div>
-        <div class="rating">
-          <div class="icon">
-            <eyes :width="'14'" :color="'#2ecc71'" />
+        <swiper-slide
+          v-for="item in listComic"
+          :key="item.id"
+          class="comic-item"
+          @click="handleViewDetail(item)"
+        >
+          <div class="picture">
+            <img :src="item.thumbnail" alt="picture" />
           </div>
-          <div class="rate">
-            <p>{{ formatNumber(item.total_views) }}</p>
+          <div class="name">{{ item.title }}</div>
+          <div class="chapter">Cập nhật: {{ item.updated_at }}</div>
+          <div class="rating">
+            <div class="icon">
+              <eyes :width="'14'" :color="'#2ecc71'" />
+            </div>
+            <div class="rate">
+              <p>{{ formatNumber(item.total_views) }}</p>
+            </div>
           </div>
-        </div>
-      </div>
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import Eyes from "@/assets/icons/Eyes.vue";
 import { stringify } from "qs";
 import { computed, onMounted, ref } from "vue";
@@ -36,45 +48,90 @@ import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
 import { formatNumber } from "@/utils/format";
 import { useRouter } from "vue-router";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
-const listComic = ref();
+export default {
+  components: { Eyes, Swiper, SwiperSlide },
+  setup() {
+    const listComic = ref();
 
-const { startProgress, stopProgress } = useLoadingStore(store);
+    const { startProgress, stopProgress } = useLoadingStore(store);
 
-const router = useRouter();
+    const router = useRouter();
 
-const pagination = ref({
-  page: 1,
-  status: STATUS.ALL,
-});
+    const pagination = ref({
+      page: 1,
+      status: STATUS.ALL,
+    });
 
-const queryString = computed(() =>
-  stringify(
-    {
-      ...pagination.value,
-    },
-    {
-      arrayFormat: "comma",
-    }
-  )
-);
+    const queryString = computed(() =>
+      stringify(
+        {
+          ...pagination.value,
+        },
+        {
+          arrayFormat: "comma",
+        }
+      )
+    );
 
-const fetchData = async () => {
-  startProgress();
-  const res = await getNewComic(queryString.value);
-  stopProgress();
-  listComic.value = res.comics;
-};
+    const fetchData = async () => {
+      startProgress();
+      const res = await getNewComic(queryString.value);
+      stopProgress();
+      listComic.value = res.comics;
+    };
 
-onMounted(() => {
-  fetchData();
-});
+    onMounted(() => {
+      fetchData();
+    });
 
-const handleViewDetail = (item: any) => {
-  router.push({ name: "DetailPage", params: { id: item.id } });
+    const handleViewDetail = (item: any) => {
+      router.push({ name: "DetailPage", params: { id: item.id } });
+    };
+
+    return {
+      listComic,
+      formatNumber,
+      handleViewDetail,
+      modules: [Autoplay, Pagination, Navigation],
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/components/_new-released.scss";
+.comic-container ::v-deep(.swiper-button-next) {
+  --swiper-navigation-size: 16px;
+  --swiper-navigation-top-offset: 35%;
+  --swiper-navigation-sides-offset: 10px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #e6052e;
+  padding: 20px;
+  border-radius: 50%;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+}
+.comic-container ::v-deep(.swiper-button-prev) {
+  --swiper-navigation-size: 16px;
+  --swiper-navigation-top-offset: 35%;
+  --swiper-navigation-sides-offset: 10px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #e6052e;
+  padding: 20px;
+  border-radius: 50%;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+}
 </style>
