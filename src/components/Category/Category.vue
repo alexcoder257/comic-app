@@ -13,9 +13,9 @@
           <div class="name">
             {{ item.name }}
           </div>
-          <div class="description">
+          <!-- <div class="description">
             {{ item.description }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

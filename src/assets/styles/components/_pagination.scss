@@ -1,0 +1,96 @@
+@import "../base/variables";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .prev {
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primary !important;
+      }
+    }
+    .next {
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primary !important;
+      }
+    }
+    li {
+      &:first-child {
+        margin-right: 8px;
+      }
+
+      &:last-child {
+        margin-left: 8px;
+      }
+
+      &.active {
+        button {
+          border: none;
+          font-weight: 500;
+          background-color: $primary;
+          color: #fff;
+        }
+      }
+      &.prev,
+      &.next {
+        button {
+          border: none;
+          overflow: hidden;
+          text-indent: -9999px;
+        }
+      }
+
+      &.prev {
+        button {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M14 7L9 12L14 17' stroke='%23828282' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+        background-position: center;
+        &.disabled {
+          button {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M14 7L9 12L14 17' stroke='%23DBDBDB' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          }
+          opacity: 0.5;
+          background-position: center;
+        }
+      }
+      &.next {
+        button {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M9 17L14 12L9 7' stroke='%23828282' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          background-position: center;
+        }
+        &.disabled {
+          button {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M9 17L14 12L9 7' stroke='%23DBDBDB' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          }
+          background-position: center;
+        }
+      }
+
+      button {
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        background-color: #333;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 160%; /* 22.4px */
+        letter-spacing: -0.28px;
+      }
+    }
+  }
+}

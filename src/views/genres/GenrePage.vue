@@ -23,12 +23,13 @@
         </div>
       </div>
     </div>
+    <pagination v-model:modelValue="currentPage" :total-pages="totalPage" />
     <footer-component />
   </div>
 </template>
 
 <script setup lang="ts">
-// import Star from "@/assets/icons/Star.vue";
+import Pagination from "@/components/Pagination/Pagination.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
 import { onMounted, ref, watch } from "vue";
 import { getComicByGenre } from "@/service/apiComic";
@@ -40,6 +41,8 @@ import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 
 const route = useRoute();
 const router = useRouter();
+const totalPage = ref(100);
+const currentPage = ref();
 const { startProgress, stopProgress } = useLoadingStore(store);
 
 const listComic = ref();
@@ -48,14 +51,18 @@ const genreName = ref(route.params.genreName);
 
 const fetchData = async () => {
   startProgress();
-  const res = await getComicByGenre(genreId.value);
+  const res = await getComicByGenre(
+    `${genreId.value}?page=${currentPage.value}`
+  );
   stopProgress();
   listComic.value = res.comics;
+  totalPage.value = res.total_pages;
 };
 
 watch(
-  () => [route.params.genreId, route.params.genreName],
+  () => [route.params.genreId, route.params.genreName, currentPage.value],
   () => {
+    console.log("main", currentPage.value);
     genreId.value = route.params.genreId;
     genreName.value = route.params.genreName;
     fetchData();
