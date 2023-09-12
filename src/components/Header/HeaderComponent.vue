@@ -1,4 +1,4 @@
-<template>
+m<template>
   <div class="header-container">
     <div class="header-left">
       <div class="logo">
@@ -25,11 +25,7 @@
       <div class="icon">
         <search-icon :color="`#fff`" :width="`24`" />
       </div>
-      <div
-        v-if="isShow && listComic"
-        class="dropdown"
-        v-click-outside="handleCloseDropdown"
-      >
+      <div v-if="isShow && listComic" class="dropdown">
         <div
           v-for="item in listComic"
           :key="item.id"
@@ -41,10 +37,59 @@
           </div>
           <div class="detail">
             <div class="title">{{ item.title }}</div>
-            <div class="author">{{ item.authors.join(",") }}</div>
+            <div class="author">
+              {{ item.authors[0] }}
+            </div>
             <div class="category">
               {{ item.genres.join(", ") }}
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dropdown-bar">
+      <div v-if="isShow" class="overlay"></div>
+      <div v-if="!isShow" class="icon-menu" @click="handleOpenDropdown">
+        <Menu :width="'32'" :color="'#fff'" />
+      </div>
+      <div v-else class="dropdown">
+        <div class="icon-cancel" @click="handleCloseDropdown">
+          <Cancel :width="'42'" :color="'#fff'" />
+        </div>
+        <div class="search-bar-side">
+          <input
+            v-model="inputQuery"
+            type="text"
+            placeholder="Search favorite comic"
+          />
+          <div v-if="isShowDropdown && listComic" class="dropdown-side">
+            <div
+              v-for="item in listComic"
+              :key="item.id"
+              class="item"
+              @click="handleChooseComic(item)"
+            >
+              <div class="thumbnail">
+                <img :src="item.thumbnail" alt="img" />
+              </div>
+              <div class="detail">
+                <div class="title">{{ item.title }}</div>
+                <div class="author">{{ item.authors[0] }}</div>
+                <div class="category">
+                  {{ item.genres.join(", ") }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-genre-side">
+          <div
+            v-for="item in genres"
+            :key="item.id"
+            class="genre-item-side"
+            @click="handleChooseGenre(item)"
+          >
+            {{ item.name }}
           </div>
         </div>
       </div>
@@ -59,8 +104,11 @@ import { getSearchSuggest } from "@/service/apiComic";
 import { useToggle } from "@/hooks/useToggle";
 import { stringify } from "qs";
 import { useRouter } from "vue-router";
+import Menu from "@/assets/icons/Menu.vue";
+import Cancel from "@/assets/icons/Cancel.vue";
 
-const { isShow, open, close } = useToggle();
+const { isShow, open, close, toggle } = useToggle();
+const isShowDropdown = ref(true);
 const inputQuery = ref("");
 
 const listComic = ref();
@@ -81,6 +129,16 @@ const genres = [
   {
     id: "manhwa-11400",
     name: "Manhwa",
+    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
+  },
+  {
+    id: "boy-comics",
+    name: "Boy Comics",
+    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
+  },
+  {
+    id: "girl-comics",
+    name: "Girl Comics",
     description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
   },
 ];
@@ -105,9 +163,13 @@ watch(
   () => inputQuery.value,
   () => {
     if (inputQuery.value !== "") {
+      isShowDropdown.value = true;
+      open();
       fetchData();
+    } else {
+      close();
+      isShowDropdown.value = false;
     }
-    open();
   }
 );
 
@@ -115,12 +177,17 @@ const handleCloseDropdown = () => {
   close();
 };
 
+const handleOpenDropdown = () => {
+  open();
+};
+
 const handleChooseGenre = (item) => {
-  console.log(item);
   router.push({
     name: "GenrePage",
     params: { genreId: item.id, genreName: item.name },
   });
+  isShowDropdown.value = false;
+  close();
 };
 
 const handleChooseComic = (item) => {

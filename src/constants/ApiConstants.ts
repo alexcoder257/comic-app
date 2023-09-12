@@ -7,7 +7,7 @@ const ApiConstants = {
   RecommendComics: "/recommend-comics",
   NewComics: "/new-comics",
   BoyComics: "/boy-comics",
-  GirlComics: "girl-comics",
+  GirlComics: "/girl-comics",
   CompletedComics: "/completed-comics",
   RecentUpdateComics: "/recent-update-comics",
   ComicDetail: "/comics",

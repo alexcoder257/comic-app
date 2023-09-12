@@ -4,7 +4,16 @@
     <div class="comic-container">
       <swiper
         :slides-per-view="6"
-        :space-between="20"
+        :breakpoints="{
+          1536: { slidesPerView: 7 },
+          1280: { slidesPerView: 5 },
+          1024: { slidesPerView: 4 },
+          768: { slidesPerView: 3 },
+          640: { slidesPerView: 2 },
+          475: { slidesPerView: 2 },
+          100: { slidesPerView: 1 },
+        }"
+        :space-between="24"
         :centeredSlides="false"
         :autoplay="{
           delay: 3000,
