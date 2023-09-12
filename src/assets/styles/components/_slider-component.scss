@@ -126,3 +126,56 @@
     background-image: url("/assets/images/sliderBackground3.jpg");
   }
 }
+
+// 2xl
+@media screen and (max-width: 1536px) {
+}
+
+// xl
+@media screen and (max-width: 1280px) {
+}
+
+// lg
+@media screen and (max-width: 1024px) {
+  .title {
+    p {
+      font-size: 38px !important;
+    }
+  }
+  .background {
+    img {
+      width: 360px !important;
+      height: 360px !important;
+    }
+  }
+  .description {
+    gap: 40px !important;
+  }
+}
+
+// md
+@media screen and (max-width: 768px) {
+  .description {
+    display: flex !important;
+    flex-direction: column !important;
+    .controler {
+      margin-top: 14px !important;
+    }
+  }
+}
+
+// sm
+@media screen and (max-width: 640px) {
+}
+
+// xs
+@media screen and (max-width: 475px) {
+  .category {
+    flex-wrap: wrap !important;
+    padding: 0 9% 12px 9% !important;
+    margin-bottom: 12px !important;
+    p {
+      font-weight: 14px !important;
+    }
+  }
+}
