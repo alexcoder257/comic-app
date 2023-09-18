@@ -118,6 +118,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
 import { getSingleChapter } from "@/service/apiComic";
+import Localbase from "localbase";
 
 const { isShow, toggle, close } = useToggle();
 const { startProgress, stopProgress } = useLoadingStore(store);
@@ -132,6 +133,8 @@ const chapterName = ref();
 const handleClickOutside = () => {
   toggle();
 };
+
+let db = new Localbase("db");
 
 const fetchData = async () => {
   startProgress();
@@ -174,7 +177,7 @@ const handleScroll = () => {
 };
 
 watch(
-  () => chapterId.value,
+  () => [chapterId.value, chapterName.value],
   () => {
     fetchData();
   },
@@ -183,9 +186,16 @@ watch(
   }
 );
 
-const handleChooseChapter = (id) => {
-  chapterId.value = id;
+const handleChooseChapter = (chapter) => {
+  chapterId.value = chapter;
   fetchData();
+  let chapterName = comicData.value.chapters.find((i) => i.id == chapter).name;
+  console.log("chapter", chapter);
+  console.log("comic data", comicData.value);
+  db.collection("comics").doc({ id: id.value }).update({
+    chapterId: chapter,
+    chapterName: chapterName,
+  });
   toggle();
 };
 
@@ -200,6 +210,13 @@ const handleNextChapter = () => {
       handleScrollTop();
     }
   }
+  let chapterName = comicData.value.chapters.find(
+    (i) => i.id == chapterId.value
+  ).name;
+  db.collection("comics").doc({ id: id.value }).update({
+    chapterId: chapterId.value,
+    chapterName: chapterName,
+  });
 };
 
 const handleBackChapter = () => {
@@ -213,6 +230,13 @@ const handleBackChapter = () => {
       handleScrollTop();
     }
   }
+  let chapterName = comicData.value.chapters.find(
+    (i) => i.id == chapterId.value
+  ).name;
+  db.collection("comics").doc({ id: id.value }).update({
+    chapterId: chapterId.value,
+    chapterName: chapterName,
+  });
 };
 </script>
 

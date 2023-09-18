@@ -76,10 +76,11 @@ import Heart from "@/assets/icons/Heart.vue";
 import Chapter from "@/assets/icons/Chapter.vue";
 import Chapter2 from "@/assets/icons/Chapter2.vue";
 import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { getDetailCommic } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import { formatNumber } from "@/utils/format";
+import Localbase from "localbase";
 import store from "@/store";
 
 const route = useRouter();
@@ -91,6 +92,8 @@ const { startProgress, stopProgress } = useLoadingStore(store);
 const comicDetail = ref();
 const chapterId = ref();
 const listChapter = ref();
+const historyDb = ref();
+let db = new Localbase("db");
 
 const fetchData = async (id) => {
   startProgress();
@@ -119,8 +122,19 @@ watch(
   }
 );
 
+const fetchHistoryDb = () => {
+  db.collection("comics")
+    .get()
+    .then((comics) => (historyDb.value = comics));
+};
+
 onMounted(() => {
   fetchData(id.value);
+  fetchHistoryDb();
+});
+
+const chapterName = computed(() => {
+  return comicDetail.value.chapters.find((i) => i.id == chapterId.value).name;
 });
 
 const handleReadComic = () => {
@@ -128,10 +142,25 @@ const handleReadComic = () => {
     name: "ReadPage",
     params: { id: id.value, chapterId: chapterId.value },
   });
+
+  let condition = historyDb.value.some((item) => item.id == id.value);
+  if (condition) {
+    db.collection("comics").doc({ id: id.value }).update({
+      chapterId: chapterId.value,
+      chapterName: chapterName.value,
+    });
+  } else {
+    db.collection("comics").add({
+      id: comicDetail.value.id,
+      chapterId: chapterId.value,
+      thumbnail: comicDetail.value.thumbnail,
+      title: comicDetail.value.title,
+      chapterName: chapterName.value,
+    });
+  }
 };
 
 const handleChooseChapter = (chapter) => {
-  console.log("chapter", chapter);
   chapterId.value = chapter.id;
   handleReadComic();
 };
