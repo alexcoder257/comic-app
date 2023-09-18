@@ -3,6 +3,7 @@ const HomePage = () => import("@/views/home/HomePage.vue");
 const DetailPage = () => import("@/views/detail/DetailPage.vue");
 const ReadPage = () => import("@/views/read/ReadPage.vue");
 const GenrePage = () => import("@/views/genres/GenrePage.vue");
+const HistoryPage = () => import("@/views/history/HistoryPage.vue");
 
 const routes = [
   {
@@ -33,6 +34,14 @@ const routes = [
     path: "/:genreName/:genreId",
     component: GenrePage,
     name: "GenrePage",
+    meta: {
+      layout: "default",
+    },
+  },
+  {
+    path: "/history",
+    component: HistoryPage,
+    name: "History",
     meta: {
       layout: "default",
     },
