@@ -1,7 +1,7 @@
 <template>
   <div class="daily-content">
     <div id="list-filtered" class="content active">
-      <div class="title">DAILY UPDATE SCHEDULE MANGA</div>
+      <div class="title">DAILY UPDATE SCHEDULE COMIC</div>
       <div class="navbar">
         <div
           v-for="item in filterList"

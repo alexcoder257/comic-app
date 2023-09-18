@@ -4,7 +4,7 @@
       <div class="image">
         <img src="/assets/images/logo.png" alt="img" />
       </div>
-      <div class="title">MANGABOX</div>
+      <div class="title">COMICBOX</div>
     </div>
     <div class="description">
       If you too want to get excited over manga heroes's great performances with

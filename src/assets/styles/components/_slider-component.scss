@@ -178,4 +178,25 @@
       font-weight: 14px !important;
     }
   }
+  .background {
+    margin-top: 20px;
+    img {
+      width: 280px !important;
+      height: 280px !important;
+    }
+  }
+  .title {
+    p {
+      margin-top: 24px;
+    }
+  }
+  .description {
+    .detail {
+      min-width: 260px !important;
+      margin-bottom: 42px !important;
+    }
+    .controler {
+      margin-top: 32px !important;
+    }
+  }
 }

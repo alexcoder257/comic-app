@@ -12,8 +12,8 @@
     justify-content: center;
     gap: 48px;
     width: 850px;
+    margin-top: 24px;
     .content {
-      width: 100%;
       .title {
         font-weight: 600;
         font-size: 32px;
@@ -75,7 +75,7 @@
   }
   .footer {
     width: 100vw;
-    height: 200px;
+    height: 148px;
     background-image: linear-gradient(
         to bottom,
         rgba(14, 14, 14, 0.8),
@@ -85,5 +85,64 @@
     background-position: center;
     background-repeat: repeat;
     background-size: cover;
+  }
+}
+
+// 2xl
+@media screen and (max-width: 1536px) {
+}
+
+// xl
+@media screen and (max-width: 1280px) {
+}
+
+// lg
+@media screen and (max-width: 1024px) {
+  .image {
+    width: 250px !important;
+    height: 250px !important;
+  }
+  .content {
+    width: 50%;
+  }
+  .footer {
+    height: 108px !important;
+  }
+  .content-block {
+    .description {
+      margin-bottom: 12px !important;
+    }
+  }
+}
+
+// md
+@media screen and (max-width: 768px) {
+  .image {
+    display: none;
+  }
+  .content {
+    width: 70%;
+  }
+  .footer {
+    margin-top: 32px;
+  }
+  .content-block {
+    .description {
+      margin-bottom: 24px !important;
+    }
+  }
+}
+
+// sm
+@media screen and (max-width: 640px) {
+  .content {
+    width: 50%;
+  }
+}
+
+// xs
+@media screen and (max-width: 475px) {
+  .content {
+    width: 30%;
   }
 }

@@ -199,3 +199,16 @@
     }
   }
 }
+// sm
+@media screen and (max-width: 640px) {
+}
+
+// xs
+@media screen and (max-width: 475px) {
+  .nav-bar-bottom {
+    gap: 6px;
+    .icon-home {
+      padding: 0 !important;
+    }
+  }
+}

@@ -207,4 +207,13 @@
 
 // xs
 @media screen and (max-width: 475px) {
+  .commic-container {
+    padding: 0 !important;
+    width: 265px !important;
+  }
+  .picture {
+    img:nth-child(1) {
+      margin-right: 0 !important;
+    }
+  }
 }

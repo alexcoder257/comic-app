@@ -1,14 +1,14 @@
 <template>
   <div v-if="topComic" class="popular-container">
     <div class="header">
-      <div class="title">EASY READ MANGA ANYWHERE AND ANYTIME</div>
+      <div class="title">EASY READ COMIC ANYWHERE AND ANYTIME</div>
       <div class="picture">
         <img src="/assets/images/laptop.png" alt="img" />
         <img src="/assets/images/iphone.png" alt="img" />
       </div>
     </div>
     <div class="content">
-      <div class="title">TOP 8 POPULAR MANGA</div>
+      <div class="title">TOP 8 POPULAR COMIC</div>
       <div class="commic-container">
         <div
           v-for="(item, idx) in topComic"

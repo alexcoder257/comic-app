@@ -1,9 +1,10 @@
-m<template>
+m
+<template>
   <div class="header-container">
     <div class="header-left">
       <div class="logo">
         <img src="/assets/images/logo.png" alt="logo" />
-        <router-link to="/" class="title">MANGABOX</router-link>
+        <router-link to="/" class="title">COMICBOX</router-link>
       </div>
       <div class="list-genre">
         <div

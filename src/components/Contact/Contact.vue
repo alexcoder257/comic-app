@@ -2,7 +2,7 @@
   <div class="contact-container">
     <div class="content-block">
       <div class="content">
-        <div class="title">UPDATE <span>EVERYDAY</span> ONLY AT MANGAFOX</div>
+        <div class="title">UPDATE <span>EVERYDAY</span> ONLY AT COMICBOX</div>
         <div class="description">
           Commics are always updated at 10AM and there is a notification if the
           comic will be on holiday. So stay tuned at

@@ -58,3 +58,10 @@
     font-weight: 400;
   }
 }
+
+// xs
+@media screen and (max-width: 475px) {
+  .link {
+    flex-wrap: wrap;
+  }
+}

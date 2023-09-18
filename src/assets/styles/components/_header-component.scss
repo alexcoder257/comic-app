@@ -330,16 +330,12 @@
     .dropdown {
       width: 100%;
       .search-bar-side {
-        width: 90%;
+        width: 100%;
         margin: 0;
       }
       .icon-cancel {
-        width: 320px;
-        margin-left: 0;
-        text-align: right;
+        width: 100%;
         margin-bottom: 12px;
-        display: flex;
-        justify-content: end;
       }
     }
   }
