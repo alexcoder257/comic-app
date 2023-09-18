@@ -142,7 +142,10 @@
 
 // xs
 @media screen and (max-width: 475px) {
-  .content {
-    width: 30%;
+  .content-block {
+    width: 385px !important;
+    .content {
+      width: 70%;
+    }
   }
 }

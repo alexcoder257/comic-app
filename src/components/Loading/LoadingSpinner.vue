@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="loading-spinner loading">
     <div class="loading-spinner-icon">
       <div class="loading-spinner-icon-circle">
