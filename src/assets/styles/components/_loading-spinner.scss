@@ -19,7 +19,7 @@ $duration: 0.8s;
     // background-color: white;
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 48%;
     z-index: 10;
 
     &-circle {
@@ -56,5 +56,23 @@ $duration: 0.8s;
   100% {
     stroke-dashoffset: $offset;
     transform: rotate(270deg);
+  }
+}
+
+// md
+@media screen and (max-width: 1024px) {
+  .loading-spinner {
+    &-icon {
+      left: 47%;
+    }
+  }
+}
+
+// xs
+@media screen and (max-width: 475px) {
+  .loading-spinner {
+    &-icon {
+      left: 44%;
+    }
   }
 }
