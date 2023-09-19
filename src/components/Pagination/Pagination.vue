@@ -75,8 +75,6 @@ function clickLeft(): void {
 
 function clickRight(): void {
   if (modelData.value < props.totalPages) {
-    console.log("data", modelData.value);
-    console.log("total page", props.totalPages);
     modelData.value++;
   }
 }

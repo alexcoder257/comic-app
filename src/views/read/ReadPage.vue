@@ -190,8 +190,6 @@ const handleChooseChapter = (chapter) => {
   chapterId.value = chapter;
   fetchData();
   let chapterName = comicData.value.chapters.find((i) => i.id == chapter).name;
-  console.log("chapter", chapter);
-  console.log("comic data", comicData.value);
   db.collection("comics").doc({ id: id.value }).update({
     chapterId: chapter,
     chapterName: chapterName,

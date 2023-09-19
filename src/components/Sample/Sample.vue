@@ -30,7 +30,9 @@
           class="item"
           @click="handleChooseComic(item)"
         >
-          <img :src="item.thumbnail" alt="img" />
+          <div class="picture">
+            <img :src="item.thumbnail" alt="img" />
+          </div>
           <div class="title-comic">
             {{ item.title }}
           </div>

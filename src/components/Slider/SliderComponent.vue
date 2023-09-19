@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import Chapter from "@/assets/icons/Chapter.vue";
-import { onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 const currentIndex = ref(0);
 let pollingInterval = 0;
@@ -85,6 +85,13 @@ const mockData = ref([
 ]);
 
 const router = useRouter();
+const handleScrollTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+onMounted(() => {
+  handleScrollTop();
+});
 
 const handleReadComic = () => {
   router.push({

@@ -170,9 +170,15 @@ onMounted(() => {
   fetchData();
 });
 
+const handleScrollTop = () => {
+  const element = document.querySelector(".daily-content");
+  element?.scrollIntoView();
+};
+
 const handleShowMore = () => {
   const element = document.getElementById("list-filtered");
   element?.classList.toggle("active");
+  handleScrollTop();
 };
 
 const handleChooseComic = (item) => {

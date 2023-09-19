@@ -42,7 +42,7 @@ import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 const route = useRoute();
 const router = useRouter();
 const totalPage = ref(100);
-const currentPage = ref();
+const currentPage = ref(1);
 const { startProgress, stopProgress } = useLoadingStore(store);
 
 const listComic = ref();
@@ -54,6 +54,7 @@ const fetchData = async () => {
   const res = await getComicByGenre(
     `${genreId.value}?page=${currentPage.value}`
   );
+  handleScrollTop();
   stopProgress();
   listComic.value = res.comics;
   totalPage.value = res.total_pages;
@@ -62,14 +63,15 @@ const fetchData = async () => {
 watch(
   () => [route.params.genreId, route.params.genreName, currentPage.value],
   () => {
-    console.log("main", currentPage.value);
     genreId.value = route.params.genreId;
     genreName.value = route.params.genreName;
     fetchData();
   }
 );
-
-onMounted(() => {
+const handleScrollTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+onMounted(async () => {
   fetchData();
 });
 

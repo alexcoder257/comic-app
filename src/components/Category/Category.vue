@@ -45,10 +45,14 @@ const fetchData = async () => {
 onMounted(() => {
   fetchData();
 });
-
+const handleScrollTop = () => {
+  const element = document.querySelector(".category-container");
+  element?.scrollIntoView();
+};
 const handleShowGenre = () => {
   const element = document.getElementById("list-genre");
   element?.classList.toggle("active");
+  handleScrollTop();
 };
 
 const handleChooseGenre = (item) => {

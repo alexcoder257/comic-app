@@ -31,7 +31,7 @@ const routes = [
     },
   },
   {
-    path: "/:genreName/:genreId",
+    path: "/genres/:genreId",
     component: GenrePage,
     name: "GenrePage",
     meta: {

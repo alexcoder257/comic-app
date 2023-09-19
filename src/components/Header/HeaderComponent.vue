@@ -17,32 +17,37 @@ m
         </div>
       </div>
     </div>
-    <div class="search-bar">
-      <input
-        v-model="inputQuery"
-        type="text"
-        placeholder="Search favorite comic"
-      />
-      <div class="icon">
-        <search-icon :color="`#fff`" :width="`24`" />
+    <div class="search-container">
+      <div class="history-icon" @click="handleRedirectHistory">
+        <history :width="'24'" color="#fff" />
       </div>
-      <div v-if="isShow && listComic" class="dropdown">
-        <div
-          v-for="item in listComic"
-          :key="item.id"
-          class="item"
-          @click="handleChooseComic(item)"
-        >
-          <div class="thumbnail">
-            <img :src="item.thumbnail" alt="img" />
-          </div>
-          <div class="detail">
-            <div class="title">{{ item.title }}</div>
-            <div class="author">
-              {{ item.authors[0] }}
+      <div class="search-bar">
+        <input
+          v-model="inputQuery"
+          type="text"
+          placeholder="Search favorite comic"
+        />
+        <div class="icon">
+          <search-icon :color="`#fff`" :width="`24`" />
+        </div>
+        <div v-if="isShow && listComic" class="dropdown">
+          <div
+            v-for="item in listComic"
+            :key="item.id"
+            class="item"
+            @click="handleChooseComic(item)"
+          >
+            <div class="thumbnail">
+              <img :src="item.thumbnail" alt="img" />
             </div>
-            <div class="category">
-              {{ item.genres.join(", ") }}
+            <div class="detail">
+              <div class="title">{{ item.title }}</div>
+              <div class="author">
+                {{ item.authors[0] }}
+              </div>
+              <div class="category">
+                {{ item.genres.join(", ") }}
+              </div>
             </div>
           </div>
         </div>
@@ -85,12 +90,75 @@ m
         </div>
         <div class="list-genre-side">
           <div
-            v-for="item in genres"
-            :key="item.id"
             class="genre-item-side"
-            @click="handleChooseGenre(item)"
+            @click="
+              handleChooseGenre({ id: genres[0].id, name: genres[0].name })
+            "
           >
-            {{ item.name }}
+            <div class="icon">
+              <manga :width="'24'" :color="'#fff'" />
+            </div>
+            <p>
+              {{ genres[0].name }}
+            </p>
+          </div>
+          <div
+            class="genre-item-side"
+            @click="
+              handleChooseGenre({ id: genres[1].id, name: genres[1].name })
+            "
+          >
+            <div class="icon">
+              <fantasy :width="'24'" :color="'#fff'" />
+            </div>
+            <p>
+              {{ genres[1].name }}
+            </p>
+          </div>
+          <div
+            class="genre-item-side"
+            @click="
+              handleChooseGenre({ id: genres[2].id, name: genres[2].name })
+            "
+          >
+            <div class="icon">
+              <heart-2 :width="'24'" :color="'#fff'" />
+            </div>
+            <p>
+              {{ genres[2].name }}
+            </p>
+          </div>
+          <div
+            class="genre-item-side"
+            @click="
+              handleChooseGenre({ id: genres[3].id, name: genres[3].name })
+            "
+          >
+            <div class="icon">
+              <boy-icon :width="'24'" :color="'#fff'" />
+            </div>
+            <p>
+              {{ genres[3].name }}
+            </p>
+          </div>
+          <div
+            class="genre-item-side"
+            @click="
+              handleChooseGenre({ id: genres[4].id, name: genres[4].name })
+            "
+          >
+            <div class="icon">
+              <girl-comic :width="'24'" :color="'#fff'" />
+            </div>
+            <p>
+              {{ genres[4].name }}
+            </p>
+          </div>
+          <div class="genre-item-side" @click="handleRedirectHistory">
+            <div class="icon">
+              <history :width="'24'" :color="'#fff'" />
+            </div>
+            <p>History</p>
           </div>
         </div>
       </div>
@@ -99,6 +167,12 @@ m
 </template>
 
 <script setup lang="ts">
+import Manga from "@/assets/icons/Manga.vue";
+import Fantasy from "@/assets/icons/Fantasy.vue";
+import Heart2 from "@/assets/icons/Heart2.vue";
+import BoyIcon from "@/assets/icons/BoyIcon.vue";
+import GirlComic from "@/assets/icons/GirlComic.vue";
+import History from "@/assets/icons/History.vue";
 import SearchIcon from "@/assets/icons/SearchIcon.vue";
 import { computed, ref, watch } from "vue";
 import { getSearchSuggest } from "@/service/apiComic";
@@ -123,14 +197,16 @@ const genres = [
     description: "Truyện tranh của Nhật Bản",
   },
   {
-    id: "manhua",
-    name: "Manhua",
-    description: "Truyện tranh của Trung Quốc",
+    id: "fantasy-105",
+    name: "Fantasy",
+    description:
+      "Thể loại xuất phát từ trí tưởng tượng phong phú, từ pháp thuật đến thế giới trong mơ thậm chí là những câu chuyện thần tiên",
   },
   {
-    id: "manhwa-11400",
-    name: "Manhwa",
-    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
+    id: "romance-121",
+    name: "Romance",
+    description:
+      "Thường là những câu chuyện về tình yêu, tình cảm lãng mạn. Ớ đây chúng ta sẽ lấy ví dụ như tình yêu giữa một người con trai và con gái, bên cạnh đó đặc điểm thể loại này là kích thích trí tưởng tượng của bạn về tình yêu",
   },
   {
     id: "boy-comics",
@@ -173,6 +249,11 @@ watch(
     }
   }
 );
+
+const handleRedirectHistory = () => {
+  router.push({ name: "History" });
+  close();
+};
 
 const handleCloseDropdown = () => {
   close();

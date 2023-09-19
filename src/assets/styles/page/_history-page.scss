@@ -1,9 +1,12 @@
 @import "../base/variables";
 
 .history-container {
+  min-height: 100vh;
   background-color: $bg;
   padding: 32px 9% 0 9%;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .title {
     margin-top: 12px;
     margin-bottom: 32px;
@@ -18,17 +21,22 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 40px;
-    row-gap: 100px;
-    padding: 0 9% 100px 9%;
+    row-gap: 120px;
+    padding: 0 9% 120px 9%;
     .commic-item {
       cursor: pointer;
       width: 160px;
       height: 240px;
       .thumbnail {
         margin-bottom: 8px;
+        overflow: hidden;
         img {
           width: 100%;
           height: 240px;
+          transition: 0.3s;
+          &:hover {
+            transform: scale(1.1);
+          }
         }
       }
       .name {

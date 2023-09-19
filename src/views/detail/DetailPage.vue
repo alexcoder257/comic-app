@@ -29,11 +29,19 @@
         <div class="description">
           {{ comicDetail.description }}
         </div>
-        <div class="read-btn" @click="handleReadComic">
-          <div class="icon">
-            <chapter :width="'24'" :color="'#fff'" />
+        <div class="read-btn">
+          <div class="item" @click="handleReadComic">
+            <div class="icon">
+              <chapter :width="'24'" :color="'#fff'" />
+            </div>
+            <p>Read Now</p>
           </div>
-          <p>Read Now</p>
+          <div v-if="isRead" class="item" @click="handleReadContinue">
+            <div class="icon">
+              <continue :width="'24'" :color="'#fff'" />
+            </div>
+            <p>Continue</p>
+          </div>
         </div>
       </div>
     </div>
@@ -70,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+import Continue from "@/assets/icons/Continue.vue";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
 import Heart from "@/assets/icons/Heart.vue";
@@ -93,6 +102,8 @@ const comicDetail = ref();
 const chapterId = ref();
 const listChapter = ref();
 const historyDb = ref();
+const isRead = ref(false);
+const currentChapterId = ref();
 let db = new Localbase("db");
 
 const fetchData = async (id) => {
@@ -125,7 +136,13 @@ watch(
 const fetchHistoryDb = () => {
   db.collection("comics")
     .get()
-    .then((comics) => (historyDb.value = comics));
+    .then((comics) => {
+      historyDb.value = comics;
+      if (comics.some((i) => i.id == id.value)) {
+        currentChapterId.value = comics.find((i) => i.id == id.value).chapterId;
+        isRead.value = true;
+      }
+    });
 };
 
 onMounted(() => {
@@ -136,6 +153,13 @@ onMounted(() => {
 const chapterName = computed(() => {
   return comicDetail.value.chapters.find((i) => i.id == chapterId.value).name;
 });
+
+const handleReadContinue = () => {
+  route.push({
+    name: "ReadPage",
+    params: { id: id.value, chapterId: currentChapterId.value },
+  });
+};
 
 const handleReadComic = () => {
   route.push({
