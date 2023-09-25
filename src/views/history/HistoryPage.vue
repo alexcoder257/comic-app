@@ -1,5 +1,5 @@
 <template>
-  <div v-if="listComic" class="history-container">
+  <div class="history-container">
     <div class="content">
       <div v-if="listComic.length" class="title">HISTORY:</div>
       <div v-else class="title">NO HISTORY</div>
@@ -27,32 +27,61 @@
         </div>
       </div>
     </div>
+    <button @click="handleAddComic">Add</button>
+    <button @click="handleDelete">Delete</button>
     <footer-component />
   </div>
 </template>
 
 <script setup lang="ts">
+declare global {
+  interface Window {
+    db: IDBDatabase;
+  }
+}
 import Continue from "@/assets/icons/Continue.vue";
 import TrashBin from "@/assets/icons/TrashBin.vue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
-import Localbase from "localbase";
+import {
+  initLocalDb,
+  historyDeleteComic,
+  historyAddComic,
+} from "../../utils/indexedDb";
 
 const router = useRouter();
-const listComic = ref();
-let db = new Localbase("db");
-
-const fetchData = () => {
-  db.collection("comics")
-    .get()
-    .then((comics) => {
-      listComic.value = comics;
-    });
+const listComic = ref([
+  {
+    id: "one-piece",
+    thumbnail: "123",
+    title: "1",
+    chapterName: "1",
+    chapterId: "1",
+  },
+]);
+const getHistoryComics = () => {
+  const db = window.db;
+  const trans = db.transaction("history", "readwrite");
+  const store = trans.objectStore("history");
+  const cursorRequest = store
+    .index("reading_at")
+    .openCursor(null, "prevunique");
+  const response: any = [];
+  cursorRequest.onsuccess = () => {
+    const cursor = cursorRequest.result;
+    if (cursor) {
+      response.push(cursor.value);
+      cursor.continue();
+    } else {
+      return response;
+    }
+  };
 };
 
 onMounted(() => {
-  fetchData();
+  initLocalDb();
+  getHistoryComics();
 });
 
 const handleContinue = (item) => {
@@ -62,8 +91,18 @@ const handleContinue = (item) => {
   });
 };
 
+const handleAddComic = () => {
+  historyAddComic({
+    id: "one-piece",
+    thumbnail: "123",
+    title: "1",
+    chapterName: "1",
+    chapterId: "1",
+  });
+};
+
 const handleDelete = (id) => {
-  db.collection("comics").doc({ id }).delete();
+  historyDeleteComic("one-piece");
   const idx = listComic.value.findIndex((i) => i.id == id);
   listComic.value.splice(idx, 1);
 };
