@@ -113,7 +113,7 @@ const { startProgress, stopProgress } = useLoadingStore(store);
 const comicDetail = ref();
 const chapterId = ref();
 const listChapter = ref();
-const historyDb = ref([]);
+const historyDb = ref();
 const isRead = ref(false);
 const currentChapterId = ref();
 

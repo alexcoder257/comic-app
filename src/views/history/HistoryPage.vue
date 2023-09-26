@@ -48,7 +48,7 @@ import { historyDeleteComic } from "../../utils/indexedDb";
 import VLazyImage from "v-lazy-image";
 
 const router = useRouter();
-const listComic = ref([]);
+const listComic = ref();
 
 const getHistoryComics = () => {
   const db = window.db;
