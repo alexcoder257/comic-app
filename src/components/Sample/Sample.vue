@@ -5,6 +5,7 @@
     </div>
     <div class="list-commic">
       <swiper
+        :lazy="true"
         :slides-per-view="6"
         :breakpoints="{
           1536: { slidesPerView: 7 },
@@ -31,7 +32,11 @@
           @click="handleChooseComic(item)"
         >
           <div class="picture">
-            <img :src="item.thumbnail" alt="img" />
+            <img
+              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              loading="lazy"
+              alt="picture"
+            />
           </div>
           <div class="title-comic">
             {{ item.title }}

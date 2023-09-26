@@ -1,9 +1,8 @@
-m
 <template>
   <div class="header-container">
     <div class="header-left">
       <div class="logo">
-        <img src="/assets/images/logo.png" alt="logo" />
+        <v-lazy-image src="/assets/images/logo.png" />
         <router-link to="/" class="title">COMICBOX</router-link>
       </div>
       <div class="list-genre">
@@ -38,7 +37,9 @@ m
             @click="handleChooseComic(item)"
           >
             <div class="thumbnail">
-              <img :src="item.thumbnail" alt="img" />
+              <v-lazy-image
+                :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              />
             </div>
             <div class="detail">
               <div class="title">{{ item.title }}</div>
@@ -76,7 +77,11 @@ m
               @click="handleChooseComic(item)"
             >
               <div class="thumbnail">
-                <img :src="item.thumbnail" alt="img" />
+                <v-lazy-image
+                  :src="
+                    item.thumbnail ? item.thumbnail : '/assets/images/cardbg'
+                  "
+                />
               </div>
               <div class="detail">
                 <div class="title">{{ item.title }}</div>
@@ -167,6 +172,7 @@ m
 </template>
 
 <script setup lang="ts">
+import VLazyImage from "v-lazy-image";
 import Manga from "@/assets/icons/Manga.vue";
 import Fantasy from "@/assets/icons/Fantasy.vue";
 import Heart2 from "@/assets/icons/Heart2.vue";

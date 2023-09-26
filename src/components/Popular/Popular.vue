@@ -18,7 +18,9 @@
         >
           <div class="rank">{{ idx + 1 }}</div>
           <div class="avatar">
-            <img :src="item.thumbnail" alt="img" />
+            <v-lazy-image
+              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+            />
           </div>
           <div class="name">
             {{ item.title }}
@@ -44,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import VLazyImage from "v-lazy-image";
 import Eyes from "@/assets/icons/Eyes.vue";
 import { stringify } from "qs";
 import { useLoadingStore } from "@/store/loading";

@@ -1,12 +1,14 @@
 <template>
-  <div class="history-container">
+  <div v-if="listComic" class="history-container">
     <div class="content">
       <div v-if="listComic.length" class="title">HISTORY:</div>
       <div v-else class="title">NO HISTORY</div>
       <div class="commic-container">
         <div v-for="item in listComic" :key="item.id" class="commic-item">
           <div class="thumbnail">
-            <img :src="item.thumbnail" alt="picture" />
+            <v-lazy-image
+              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+            />
           </div>
           <div class="name">{{ item.title }}</div>
           <div class="chapter">Đọc tiếp: {{ item.chapterName }}</div>
@@ -42,7 +44,8 @@ import TrashBin from "@/assets/icons/TrashBin.vue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
-import { historyDeleteComic, historyAddComic } from "../../utils/indexedDb";
+import { historyDeleteComic } from "../../utils/indexedDb";
+import VLazyImage from "v-lazy-image";
 
 const router = useRouter();
 const listComic = ref([]);
@@ -51,12 +54,10 @@ const getHistoryComics = () => {
   const db = window.db;
   const trans = db.transaction("history", "readwrite");
   const store = trans.objectStore("history");
-  store.openCursor().onsuccess = (event: any) => {
-    const cursor = event.target.result;
-    if (cursor) {
-      listComic.value = cursor.value;
-      cursor.continue();
-    }
+  const result: any = [];
+  store.getAll().onsuccess = (event: any) => {
+    result.push(event.target.result);
+    listComic.value = result[0];
   };
 };
 

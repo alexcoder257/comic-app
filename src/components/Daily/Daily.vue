@@ -20,7 +20,9 @@
           @click="handleChooseComic(item)"
         >
           <div class="avatar">
-            <img :src="item.thumbnail" alt="img" />
+            <v-lazy-image
+              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+            />
           </div>
           <div class="name">
             {{ item.title }}
@@ -33,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import VLazyImage from "v-lazy-image";
 import { STATUS, TOP } from "@/constants/ComicConstants";
 import { useLoadingStore } from "@/store/loading";
 import { computed, onMounted, ref, watch } from "vue";

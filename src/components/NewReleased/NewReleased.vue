@@ -3,6 +3,7 @@
     <div class="title">NEW RELEASED COMIC</div>
     <div class="comic-container">
       <swiper
+        :lazy="true"
         :slides-per-view="6"
         :breakpoints="{
           1536: { slidesPerView: 7 },
@@ -29,7 +30,11 @@
           @click="handleViewDetail(item)"
         >
           <div class="picture">
-            <img :src="item.thumbnail" alt="picture" />
+            <img
+              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              loading="lazy"
+              alt="picture"
+            />
           </div>
           <div class="name">{{ item.title }}</div>
           <div class="chapter">Cập nhật: {{ item.updated_at }}</div>

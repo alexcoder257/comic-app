@@ -9,7 +9,7 @@
       <p>{{ mockData[currentIndex].title }}</p>
     </div>
     <div class="background">
-      <img :src="mockData[currentIndex].image" alt="background" />
+      <v-lazy-image :src="mockData[currentIndex].image" />
     </div>
     <div class="description">
       <div class="detail">
@@ -29,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+import VLazyImage from "v-lazy-image";
 import Chapter from "@/assets/icons/Chapter.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";

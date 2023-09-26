@@ -28,11 +28,7 @@
             :color="'#fff'"
           />
         </div>
-        <div
-          v-if="isShow"
-          v-click-outside="handleClickOutside"
-          class="dropdown"
-        >
+        <div v-if="isShow" class="dropdown">
           <p
             v-for="chapter in comicData.chapters"
             :key="chapter.id"
@@ -46,14 +42,14 @@
         <arrow-right :width="'24'" :color="'#fff'" />
       </div>
     </div>
-    <div class="content">
-      <img
+    <div class="content" v-if="isLoaded">
+      <v-lazy-image
         v-for="(item, idx) in comicData.images"
         :key="idx"
-        :src="item.src"
-        alt="img"
+        :src="item.src ? item.src : '/assets/images/cardbg'"
       />
     </div>
+    <div class="default" v-else></div>
     <div v-if="isScroll" class="nav-bar-bottom">
       <div class="icon-home" @click="handleRedirect">
         <home :width="'24'" :color="'#fff'" />
@@ -81,11 +77,7 @@
             :color="'#fff'"
           />
         </div>
-        <div
-          v-if="isShow"
-          v-click-outside="handleClickOutside"
-          class="dropdown"
-        >
+        <div v-if="isShow" class="dropdown">
           <p
             v-for="chapter in comicData.chapters"
             :key="chapter.id"
@@ -113,15 +105,13 @@ import ArrowDown from "@/assets/icons/ArrowDown.vue";
 import ArrowUp from "@/assets/icons/ArrowUp.vue";
 import ScrollTop from "@/assets/icons/ScrollTop.vue";
 import { useToggle } from "@/hooks/useToggle";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useLoadingStore } from "@/store/loading";
-import store from "@/store";
-import { getSingleChapter } from "@/service/apiComic";
-import Localbase from "localbase";
+import { getSingleChapter, getDetailCommic } from "@/service/apiComic";
+import { historyAddComic, historyDeleteComic } from "../../utils/indexedDb";
+import VLazyImage from "v-lazy-image";
 
 const { isShow, toggle, close } = useToggle();
-const { startProgress, stopProgress } = useLoadingStore(store);
 const router = useRouter();
 const route = useRoute();
 const isScroll = ref(false);
@@ -129,15 +119,10 @@ const id = ref(route.params.id);
 const chapterId = ref(route.params.chapterId);
 const comicData = ref();
 const chapterName = ref();
-
-const handleClickOutside = () => {
-  toggle();
-};
-
-let db = new Localbase("db");
+const isLoaded = ref(false);
+const thumbnail = ref();
 
 const fetchData = async () => {
-  startProgress();
   try {
     const res = await getSingleChapter({
       comicId: id.value,
@@ -148,13 +133,19 @@ const fetchData = async () => {
   } catch (error) {
     throw new Error();
   } finally {
-    stopProgress();
+    isLoaded.value = true;
   }
 };
 
+const fetchDetail = async () => {
+  const res = await getDetailCommic(id.value);
+  thumbnail.value = res.thumbnail;
+};
+
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
   fetchData();
+  fetchDetail();
+  window.addEventListener("scroll", handleScroll);
 });
 
 const handleRedirect = () => {
@@ -177,7 +168,7 @@ const handleScroll = () => {
 };
 
 watch(
-  () => [chapterId.value, chapterName.value],
+  () => [chapterId.value],
   () => {
     fetchData();
   },
@@ -187,54 +178,67 @@ watch(
 );
 
 const handleChooseChapter = (chapter) => {
+  close();
+  isLoaded.value = false;
   chapterId.value = chapter;
-  fetchData();
+  handleScrollTop();
   let chapterName = comicData.value.chapters.find((i) => i.id == chapter).name;
-  db.collection("comics").doc({ id: id.value }).update({
+  historyDeleteComic(id.value);
+  historyAddComic({
+    id: id.value,
     chapterId: chapter,
+    thumbnail: thumbnail.value,
+    title: comicData.value.comic_name,
     chapterName: chapterName,
   });
-  toggle();
 };
 
 const handleNextChapter = () => {
+  close();
+  isLoaded.value = false;
   if (comicData.value && chapterId.value) {
     const idx = comicData.value.chapters.findIndex(
       (item) => item.id == chapterId.value
     );
     if (idx !== 0) {
       chapterId.value = comicData.value.chapters[idx - 1].id;
-      fetchData();
-      handleScrollTop();
     }
+    let chapterName = comicData.value.chapters.find(
+      (i) => i.id == chapterId.value
+    ).name;
+    historyDeleteComic(id.value);
+    historyAddComic({
+      id: id.value,
+      chapterId: chapterId.value,
+      thumbnail: thumbnail.value,
+      title: comicData.value.comic_name,
+      chapterName: chapterName,
+    });
   }
-  let chapterName = comicData.value.chapters.find(
-    (i) => i.id == chapterId.value
-  ).name;
-  db.collection("comics").doc({ id: id.value }).update({
-    chapterId: chapterId.value,
-    chapterName: chapterName,
-  });
 };
 
 const handleBackChapter = () => {
+  close();
+  isLoaded.value = false;
   if (comicData.value && chapterId.value) {
     const idx = comicData.value.chapters.findIndex(
       (item) => item.id == chapterId.value
     );
     if (idx !== comicData.value.chapters.length - 1) {
       chapterId.value = comicData.value.chapters[idx + 1].id;
-      fetchData();
-      handleScrollTop();
     }
+    let chapterName = comicData.value.chapters.find(
+      (i) => i.id == chapterId.value
+    ).name;
+    historyDeleteComic(id.value);
+    historyAddComic({
+      id: id.value,
+      chapterId: chapterId.value,
+      thumbnail: thumbnail.value,
+      title: comicData.value.comic_name,
+      chapterName: chapterName,
+    });
   }
-  let chapterName = comicData.value.chapters.find(
-    (i) => i.id == chapterId.value
-  ).name;
-  db.collection("comics").doc({ id: id.value }).update({
-    chapterId: chapterId.value,
-    chapterName: chapterName,
-  });
 };
 </script>
 

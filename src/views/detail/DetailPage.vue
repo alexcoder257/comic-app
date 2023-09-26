@@ -2,7 +2,13 @@
   <div v-if="comicDetail" class="detail-container">
     <div class="content">
       <div class="image">
-        <img :src="comicDetail.thumbnail" alt="img" />
+        <v-lazy-image
+          :src="
+            comicDetail.thumbnail
+              ? comicDetail.thumbnail
+              : '/assets/images/cardbg'
+          "
+        />
       </div>
       <div class="detail">
         <div class="name">{{ comicDetail.title }}</div>
@@ -83,7 +89,7 @@ declare global {
     db: IDBDatabase;
   }
 }
-
+import VLazyImage from "v-lazy-image";
 import Continue from "@/assets/icons/Continue.vue";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
@@ -95,7 +101,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { getDetailCommic } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import { formatNumber } from "@/utils/format";
-import Localbase from "localbase";
 import store from "@/store";
 import { historyAddComic, historyDeleteComic } from "../../utils/indexedDb";
 
@@ -111,7 +116,6 @@ const listChapter = ref();
 const historyDb = ref([]);
 const isRead = ref(false);
 const currentChapterId = ref();
-let db = new Localbase("db");
 
 const fetchData = async (id) => {
   startProgress();
@@ -140,25 +144,18 @@ watch(
   }
 );
 const getHistoryComics = () => {
-  console.log("active");
   const db = window.db;
   const trans = db.transaction("history", "readwrite");
   const store = trans.objectStore("history");
-  store.openCursor().onsuccess = (event: any) => {
-    console.log("hihi");
-    const cursor = event.target.result;
-    const result: any = [];
-    if (cursor) {
-      result.push(cursor.value);
-      console.log("result", result);
-      historyDb.value = result;
-      if (result.some((i) => i.id == idComic.value)) {
-        currentChapterId.value = cursor.value.find(
-          (i) => i.id == idComic.value
-        ).chapterId;
-        isRead.value = true;
-      }
-      cursor.continue();
+  const result: any = [];
+  store.getAll().onsuccess = (event: any) => {
+    result.push(event.target.result);
+    historyDb.value = result[0];
+    if (result[0].some((i) => i.id == idComic.value)) {
+      currentChapterId.value = result[0].find(
+        (i) => i.id == idComic.value
+      ).chapterId;
+      isRead.value = true;
     }
   };
 };
@@ -198,7 +195,6 @@ const handleReadComic = () => {
       chapterName: chapterName.value,
     });
   } else {
-    console.log("active123");
     historyAddComic({
       id: comicDetail.value.id,
       chapterId: chapterId.value,
