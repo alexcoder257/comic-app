@@ -1,17 +1,19 @@
 @import "../base/variables";
 .read-container {
-  background-color: #333;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   .content {
-    max-width: 1200px;
-    background-color: #333;
-    img {
-      width: 100%;
-      margin-bottom: -2px;
+    width: 100vw;
+    background-color: #1e1d1d;
+    .img-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      img {
+        width: 100%;
+        margin-bottom: -2px;
+      }
     }
   }
   .default {

@@ -43,11 +43,13 @@
       </div>
     </div>
     <div class="content" v-if="isLoaded">
-      <v-lazy-image
-        v-for="(item, idx) in comicData.images"
-        :key="idx"
-        :src="item.src ? item.src : '/assets/images/cardbg'"
-      />
+      <div class="img-container">
+        <v-lazy-image
+          v-for="(item, idx) in comicData.images"
+          :key="idx"
+          :src="item.src ? item.src : '/assets/images/cardbg'"
+        />
+      </div>
     </div>
     <div class="default" v-else></div>
     <div v-if="isScroll" class="nav-bar-bottom">
