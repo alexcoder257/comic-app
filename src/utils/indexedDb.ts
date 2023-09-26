@@ -27,7 +27,6 @@ export const initLocalDb = () => {
       keyPath: "id",
       autoIncrement: false,
     });
-    // store.createIndex("reading_at", "reading_at", { unique: true });
   };
 
   localDb.onsuccess = (e: any) => {
@@ -43,14 +42,12 @@ export const historyAddComic = (data: any) => {
   const db = window.db;
   const trans = db.transaction("history", "readwrite");
   const store = trans.objectStore("history");
-  store.put({ ...data, genres: [] });
+  store.put(data);
 };
 
-export const historyDeleteComic = (key: string) => {
+export const historyDeleteComic = (key: any) => {
   const db = window.db;
   const trans = db.transaction("history", "readwrite");
   const store = trans.objectStore("history");
   store.delete(key);
 };
-
-

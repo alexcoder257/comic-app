@@ -27,8 +27,6 @@
         </div>
       </div>
     </div>
-    <button @click="handleAddComic">Add</button>
-    <button @click="handleDelete">Delete</button>
     <footer-component />
   </div>
 </template>
@@ -44,43 +42,25 @@ import TrashBin from "@/assets/icons/TrashBin.vue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
-import {
-  initLocalDb,
-  historyDeleteComic,
-  historyAddComic,
-} from "../../utils/indexedDb";
+import { historyDeleteComic, historyAddComic } from "../../utils/indexedDb";
 
 const router = useRouter();
-const listComic = ref([
-  {
-    id: "one-piece",
-    thumbnail: "123",
-    title: "1",
-    chapterName: "1",
-    chapterId: "1",
-  },
-]);
+const listComic = ref([]);
+
 const getHistoryComics = () => {
   const db = window.db;
   const trans = db.transaction("history", "readwrite");
   const store = trans.objectStore("history");
-  const cursorRequest = store
-    .index("reading_at")
-    .openCursor(null, "prevunique");
-  const response: any = [];
-  cursorRequest.onsuccess = () => {
-    const cursor = cursorRequest.result;
+  store.openCursor().onsuccess = (event: any) => {
+    const cursor = event.target.result;
     if (cursor) {
-      response.push(cursor.value);
+      listComic.value = cursor.value;
       cursor.continue();
-    } else {
-      return response;
     }
   };
 };
 
 onMounted(() => {
-  initLocalDb();
   getHistoryComics();
 });
 
@@ -91,18 +71,8 @@ const handleContinue = (item) => {
   });
 };
 
-const handleAddComic = () => {
-  historyAddComic({
-    id: "one-piece",
-    thumbnail: "123",
-    title: "1",
-    chapterName: "1",
-    chapterId: "1",
-  });
-};
-
 const handleDelete = (id) => {
-  historyDeleteComic("one-piece");
+  historyDeleteComic(id);
   const idx = listComic.value.findIndex((i) => i.id == id);
   listComic.value.splice(idx, 1);
 };

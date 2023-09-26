@@ -78,6 +78,12 @@
 </template>
 
 <script setup lang="ts">
+declare global {
+  interface Window {
+    db: IDBDatabase;
+  }
+}
+
 import Continue from "@/assets/icons/Continue.vue";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 import Eyes from "@/assets/icons/Eyes.vue";
@@ -91,17 +97,18 @@ import { useLoadingStore } from "@/store/loading";
 import { formatNumber } from "@/utils/format";
 import Localbase from "localbase";
 import store from "@/store";
+import { historyAddComic, historyDeleteComic } from "../../utils/indexedDb";
 
 const route = useRouter();
 const router = useRoute();
-const id = ref(router.params.id);
+const idComic = ref(router.params.id);
 const totalChapter = ref();
 const listChapterRange = ref();
 const { startProgress, stopProgress } = useLoadingStore(store);
 const comicDetail = ref();
 const chapterId = ref();
 const listChapter = ref();
-const historyDb = ref();
+const historyDb = ref([]);
 const isRead = ref(false);
 const currentChapterId = ref();
 let db = new Localbase("db");
@@ -132,22 +139,33 @@ watch(
     listChapterRange.value = result;
   }
 );
-
-const fetchHistoryDb = () => {
-  db.collection("comics")
-    .get()
-    .then((comics) => {
-      historyDb.value = comics;
-      if (comics.some((i) => i.id == id.value)) {
-        currentChapterId.value = comics.find((i) => i.id == id.value).chapterId;
+const getHistoryComics = () => {
+  console.log("active");
+  const db = window.db;
+  const trans = db.transaction("history", "readwrite");
+  const store = trans.objectStore("history");
+  store.openCursor().onsuccess = (event: any) => {
+    console.log("hihi");
+    const cursor = event.target.result;
+    const result: any = [];
+    if (cursor) {
+      result.push(cursor.value);
+      console.log("result", result);
+      historyDb.value = result;
+      if (result.some((i) => i.id == idComic.value)) {
+        currentChapterId.value = cursor.value.find(
+          (i) => i.id == idComic.value
+        ).chapterId;
         isRead.value = true;
       }
-    });
+      cursor.continue();
+    }
+  };
 };
 
 onMounted(() => {
-  fetchData(id.value);
-  fetchHistoryDb();
+  fetchData(idComic.value);
+  getHistoryComics();
 });
 
 const chapterName = computed(() => {
@@ -157,24 +175,31 @@ const chapterName = computed(() => {
 const handleReadContinue = () => {
   route.push({
     name: "ReadPage",
-    params: { id: id.value, chapterId: currentChapterId.value },
+    params: { id: idComic.value, chapterId: currentChapterId.value },
   });
 };
 
 const handleReadComic = () => {
   route.push({
     name: "ReadPage",
-    params: { id: id.value, chapterId: chapterId.value },
+    params: { id: idComic.value, chapterId: chapterId.value },
   });
 
-  let condition = historyDb.value.some((item) => item.id == id.value);
+  let condition = historyDb.value
+    ? historyDb.value.some((item) => item.id == idComic.value)
+    : false;
   if (condition) {
-    db.collection("comics").doc({ id: id.value }).update({
+    historyDeleteComic(idComic.value);
+    historyAddComic({
+      id: comicDetail.value.id,
       chapterId: chapterId.value,
+      thumbnail: comicDetail.value.thumbnail,
+      title: comicDetail.value.title,
       chapterName: chapterName.value,
     });
   } else {
-    db.collection("comics").add({
+    console.log("active123");
+    historyAddComic({
       id: comicDetail.value.id,
       chapterId: chapterId.value,
       thumbnail: comicDetail.value.thumbnail,

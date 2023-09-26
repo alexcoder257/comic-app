@@ -9,12 +9,16 @@
 import DefaultLayout from "@/views/layouts/DefaultLayout.vue";
 import SimpleLayout from "@/views/layouts/SimpleLayout.vue";
 import { storeToRefs } from "pinia";
-import { computed, watch } from "vue";
+import { computed, onBeforeMount, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useLoadingStore } from "@/store/loading";
 import LoadingSpinner from "@/components/Loading/LoadingSpinner.vue";
 import store from "@/store";
+import { initLocalDb } from "./utils/indexedDb";
 
+onBeforeMount(() => {
+  initLocalDb();
+});
 const layouts = {
   default: DefaultLayout,
   simple: SimpleLayout,
