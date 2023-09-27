@@ -7,15 +7,12 @@
           v-for="item in genres"
           class="item"
           :key="item.id"
-          :style="`background-image: url(/assets/images/sliderBackground1.jpg)`"
+          :style="`background-image: url(${sliderBackground1})`"
           @click="handleChooseGenre(item)"
         >
           <div class="name">
             {{ item.name }}
           </div>
-          <!-- <div class="description">
-            {{ item.description }}
-          </div> -->
         </div>
       </div>
     </div>
@@ -24,21 +21,20 @@
 </template>
 
 <script setup lang="ts">
-import { useLoadingStore } from "@/store/loading";
 import store from "@/store";
 import { getAllGenres } from "@/service/apiComic";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useGenreStore } from "@/store/genre";
+import sliderBackground1 from "@/assets/images/sliderBackground1.jpg";
 
-const { startProgress, stopProgress } = useLoadingStore(store);
+const { setGenreName } = useGenreStore(store);
 
 const router = useRouter();
 
 const genres = ref();
 const fetchData = async () => {
-  startProgress();
   const res = await getAllGenres();
-  stopProgress();
   genres.value = res.slice().reverse();
 };
 
@@ -56,6 +52,7 @@ const handleShowGenre = () => {
 };
 
 const handleChooseGenre = (item) => {
+  setGenreName(item.name);
   router.push({
     name: "GenrePage",
     params: { genreId: item.id, genreName: item.name },

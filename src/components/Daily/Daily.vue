@@ -14,14 +14,15 @@
       </div>
       <div class="commic-container">
         <div
-          v-for="item in listComic"
+          v-for="(item, idx) in listComic"
           :key="item.id"
           class="commic-item"
           @click="handleChooseComic(item)"
         >
           <div class="avatar">
             <v-lazy-image
-              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              :src="item.thumbnail"
+              @error="replaceByDefault(idx)"
             />
           </div>
           <div class="name">
@@ -41,6 +42,7 @@ import { useLoadingStore } from "@/store/loading";
 import { computed, onMounted, ref, watch } from "vue";
 import store from "@/store";
 import { stringify } from "qs";
+import cardbg from "@/assets/images/cardbg.jpg";
 import {
   getDailyComic,
   getMonthlyComic,
@@ -98,6 +100,10 @@ const queryString = computed(() =>
 );
 
 const listComic = ref();
+
+const replaceByDefault = (idx) => {
+  listComic.value[idx].thumbnail = cardbg;
+};
 
 const pagination = ref({
   page: 1,

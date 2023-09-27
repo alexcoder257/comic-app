@@ -4,10 +4,15 @@
       <div v-if="listComic.length" class="title">HISTORY:</div>
       <div v-else class="title">NO HISTORY</div>
       <div class="commic-container">
-        <div v-for="item in listComic" :key="item.id" class="commic-item">
+        <div
+          v-for="(item, idx) in listComic"
+          :key="item.id"
+          class="commic-item"
+        >
           <div class="thumbnail">
             <v-lazy-image
-              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              :src="item.thumbnail"
+              @error="replaceByDefault(idx)"
             />
           </div>
           <div class="name">{{ item.title }}</div>
@@ -46,9 +51,13 @@ import { useRouter } from "vue-router";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
 import { historyDeleteComic } from "../../utils/indexedDb";
 import VLazyImage from "v-lazy-image";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 const router = useRouter();
 const listComic = ref();
+const replaceByDefault = (idx) => {
+  listComic.value[idx].thumbnail = cardbg;
+};
 
 const getHistoryComics = () => {
   const db = window.db;

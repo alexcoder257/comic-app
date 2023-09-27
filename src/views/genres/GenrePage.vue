@@ -1,17 +1,15 @@
 <template>
   <div class="genre-container">
-    <div class="title">GENRES: {{ genreName }}</div>
+    <div class="title">GENRES: {{ getGenreName }}</div>
     <div class="commic-container">
       <div
-        v-for="item in listComic"
+        v-for="(item, idx) in listComic"
         :key="item.id"
         class="commic-item"
         @click="handleViewDetail(item)"
       >
         <div class="thumbnail">
-          <v-lazy-image
-            :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
-          />
+          <v-lazy-image :src="item.thumbnail" @error="replaceByDefault(idx)" />
         </div>
         <div class="name">{{ item.title }}</div>
         <div class="chapter">Cập nhật: {{ item.updated_at }}</div>
@@ -37,21 +35,27 @@ import Eyes from "@/assets/icons/Eyes.vue";
 import { onMounted, ref, watch } from "vue";
 import { getComicByGenre } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
+import { useGenreStore } from "@/store/genre";
 import store from "@/store";
 import { formatNumber } from "@/utils/format";
 import { useRoute, useRouter } from "vue-router";
 import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
+import { storeToRefs } from "pinia";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 const route = useRoute();
 const router = useRouter();
 const totalPage = ref(100);
 const currentPage = ref(1);
 const { startProgress, stopProgress } = useLoadingStore(store);
+const replaceByDefault = (idx) => {
+  listComic.value[idx].thumbnail = cardbg;
+};
+
+const { getGenreName } = storeToRefs(useGenreStore(store));
 
 const listComic = ref();
 const genreId = ref(route.params.genreId);
-const genreName = ref(route.params.genreName);
-
 const fetchData = async () => {
   startProgress();
   const res = await getComicByGenre(
@@ -64,10 +68,9 @@ const fetchData = async () => {
 };
 
 watch(
-  () => [route.params.genreId, route.params.genreName, currentPage.value],
+  () => [route.params.genreId, currentPage.value],
   () => {
     genreId.value = route.params.genreId;
-    genreName.value = route.params.genreName;
     fetchData();
   }
 );

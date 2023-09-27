@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="header-left">
       <div class="logo">
-        <v-lazy-image src="/assets/images/logo.png" />
+        <v-lazy-image :src="logo" />
         <router-link to="/" class="title">COMICBOX</router-link>
       </div>
       <div class="list-genre">
@@ -37,9 +37,7 @@
             @click="handleChooseComic(item)"
           >
             <div class="thumbnail">
-              <v-lazy-image
-                :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
-              />
+              <v-lazy-image :src="item.thumbnail" />
             </div>
             <div class="detail">
               <div class="title">{{ item.title }}</div>
@@ -77,11 +75,7 @@
               @click="handleChooseComic(item)"
             >
               <div class="thumbnail">
-                <v-lazy-image
-                  :src="
-                    item.thumbnail ? item.thumbnail : '/assets/images/cardbg'
-                  "
-                />
+                <v-lazy-image :src="item.thumbnail" />
               </div>
               <div class="detail">
                 <div class="title">{{ item.title }}</div>
@@ -187,10 +181,14 @@ import { stringify } from "qs";
 import { useRouter } from "vue-router";
 import Menu from "@/assets/icons/Menu.vue";
 import Cancel from "@/assets/icons/Cancel.vue";
+import { useGenreStore } from "@/store/genre";
+import store from "@/store";
+import logo from "@/assets/images/logo.png";
 
-const { isShow, open, close, toggle } = useToggle();
+const { isShow, open, close } = useToggle();
 const isShowDropdown = ref(true);
 const inputQuery = ref("");
+const { setGenreName } = useGenreStore(store);
 
 const listComic = ref();
 
@@ -200,29 +198,22 @@ const genres = [
   {
     id: "manga-112",
     name: "Manga",
-    description: "Truyện tranh của Nhật Bản",
   },
   {
     id: "fantasy-105",
     name: "Fantasy",
-    description:
-      "Thể loại xuất phát từ trí tưởng tượng phong phú, từ pháp thuật đến thế giới trong mơ thậm chí là những câu chuyện thần tiên",
   },
   {
     id: "romance-121",
     name: "Romance",
-    description:
-      "Thường là những câu chuyện về tình yêu, tình cảm lãng mạn. Ớ đây chúng ta sẽ lấy ví dụ như tình yêu giữa một người con trai và con gái, bên cạnh đó đặc điểm thể loại này là kích thích trí tưởng tượng của bạn về tình yêu",
   },
   {
     id: "boy-comics",
     name: "Boy Comics",
-    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
   },
   {
     id: "girl-comics",
     name: "Girl Comics",
-    description: "Truyện tranh Hàn Quốc, đọc từ trái sang phải",
   },
 ];
 
@@ -270,6 +261,7 @@ const handleOpenDropdown = () => {
 };
 
 const handleChooseGenre = (item) => {
+  setGenreName(item.name);
   router.push({
     name: "GenrePage",
     params: { genreId: item.id, genreName: item.name },

@@ -31,8 +31,8 @@
         >
           <div class="picture">
             <img
-              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
-              loading="lazy"
+              :src="item.thumbnail"
+              @error="replaceByDefault"
               alt="picture"
             />
           </div>
@@ -58,8 +58,6 @@ import { stringify } from "qs";
 import { computed, onMounted, ref } from "vue";
 import { STATUS } from "@/constants/ComicConstants";
 import { getNewComic } from "@/service/apiComic";
-import { useLoadingStore } from "@/store/loading";
-import store from "@/store";
 import { formatNumber } from "@/utils/format";
 import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -67,13 +65,16 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 export default {
   components: { Eyes, Swiper, SwiperSlide },
   setup() {
     const listComic = ref();
 
-    const { startProgress, stopProgress } = useLoadingStore(store);
+    const replaceByDefault = (e) => {
+      e.target.src = cardbg;
+    };
 
     const router = useRouter();
 
@@ -94,9 +95,9 @@ export default {
     );
 
     const fetchData = async () => {
-      startProgress();
+      // startProgress();
       const res = await getNewComic(queryString.value);
-      stopProgress();
+      // stopProgress();
       listComic.value = res.comics;
     };
 
@@ -109,6 +110,7 @@ export default {
     };
 
     return {
+      replaceByDefault,
       listComic,
       formatNumber,
       handleViewDetail,

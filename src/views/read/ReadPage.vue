@@ -12,7 +12,7 @@
           type="text"
           placeholder="Chapter ..."
           disabled
-          :value="chapterName ? chapterName : 'Chapter 99'"
+          :value="chapterName"
         />
         <div class="icon">
           <arrow-up
@@ -44,10 +44,12 @@
     </div>
     <div class="content" v-if="isLoaded">
       <div class="img-container">
-        <v-lazy-image
+        <img
           v-for="(item, idx) in comicData.images"
           :key="idx"
-          :src="item.src ? item.src : '/assets/images/cardbg'"
+          :src="item.src"
+          @error="replaceByDefault"
+          alt="img"
         />
       </div>
     </div>
@@ -97,9 +99,11 @@
       <scroll-top :width="'32'" :color="'#e6052e'" />
     </div>
   </div>
+  <LoadingSpinner v-show="true" />
 </template>
 
 <script lang="ts" setup>
+import LoadingSpinner from "@/components/Loading/LoadingSpinner.vue";
 import Home from "@/assets/icons/Home.vue";
 import ArrowLeft from "@/assets/icons/ArrowLeft.vue";
 import ArrowRight from "@/assets/icons/ArrowRight.vue";
@@ -111,7 +115,7 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getSingleChapter, getDetailCommic } from "@/service/apiComic";
 import { historyAddComic, historyDeleteComic } from "../../utils/indexedDb";
-import VLazyImage from "v-lazy-image";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 const { isShow, toggle, close } = useToggle();
 const router = useRouter();
@@ -123,6 +127,10 @@ const comicData = ref();
 const chapterName = ref();
 const isLoaded = ref(false);
 const thumbnail = ref();
+
+const replaceByDefault = (e) => {
+  e.target.src = cardbg;
+};
 
 const fetchData = async () => {
   try {

@@ -2,13 +2,7 @@
   <div v-if="comicDetail" class="detail-container">
     <div class="content">
       <div class="image">
-        <v-lazy-image
-          :src="
-            comicDetail.thumbnail
-              ? comicDetail.thumbnail
-              : '/assets/images/cardbg'
-          "
-        />
+        <v-lazy-image :src="comicDetail.thumbnail" />
       </div>
       <div class="detail">
         <div class="name">{{ comicDetail.title }}</div>

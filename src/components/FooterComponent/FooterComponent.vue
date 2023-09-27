@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="logo">
       <div class="image">
-        <img src="/assets/images/logo.png" alt="img" />
+        <img :src="logo" alt="img" />
       </div>
       <div class="title">COMICBOX</div>
     </div>
@@ -45,6 +45,7 @@ import Facebook from "@/assets/icons/Facebook.vue";
 import Instagram from "@/assets/icons/Instagram.vue";
 import Tiktok from "@/assets/icons/Tiktok.vue";
 import Youtube from "@/assets/icons/Youtube.vue";
+import logo from "@/assets/images/logo.png";
 </script>
 
 <style lang="scss" scoped>

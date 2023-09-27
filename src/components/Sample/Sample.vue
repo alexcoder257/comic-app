@@ -33,9 +33,10 @@
         >
           <div class="picture">
             <img
-              :src="item.thumbnail ? item.thumbnail : '/assets/images/cardbg'"
+              :src="item.thumbnail"
               loading="lazy"
               alt="picture"
+              @error="replaceByDefault"
             />
           </div>
           <div class="title-comic">
@@ -77,6 +78,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 export default {
   components: { Eyes, Heart, Swiper, SwiperSlide },
@@ -98,6 +100,9 @@ export default {
         }
       )
     );
+    const replaceByDefault = (e) => {
+      e.target.src = cardbg;
+    };
 
     const listComic = ref();
 
@@ -133,6 +138,7 @@ export default {
     });
 
     return {
+      replaceByDefault,
       listComic,
       formatNumber,
       handleChooseComic,
