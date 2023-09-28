@@ -9,7 +9,7 @@
           :key="item.id"
           class="commic-item"
         >
-          <div class="thumbnail">
+          <div class="thumbnail" @click="handleViewDetail(item)">
             <v-lazy-image
               :src="item.thumbnail"
               @error="replaceByDefault(idx)"
@@ -73,6 +73,10 @@ const getHistoryComics = () => {
 onMounted(() => {
   getHistoryComics();
 });
+
+const handleViewDetail = (item: any) => {
+  router.push({ name: "DetailPage", params: { id: item.id } });
+};
 
 const handleContinue = (item) => {
   router.push({

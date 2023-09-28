@@ -93,6 +93,9 @@
         padding: 12px;
         border-radius: 32px;
         font-weight: 500;
+        &:hover {
+          opacity: 0.8;
+        }
       }
       .chapter {
         display: flex;

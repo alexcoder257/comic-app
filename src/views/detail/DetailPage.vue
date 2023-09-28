@@ -2,12 +2,17 @@
   <div v-if="comicDetail" class="detail-container">
     <div class="content">
       <div class="image">
-        <v-lazy-image :src="comicDetail.thumbnail" />
+        <v-lazy-image :src="comicDetail.thumbnail" @error="replaceByDefault" />
       </div>
       <div class="detail">
         <div class="name">{{ comicDetail.title }}</div>
         <div class="genres">
-          <div v-for="genre in comicDetail.genres" :key="genre.id" class="item">
+          <div
+            v-for="genre in comicDetail.genres"
+            :key="genre.id"
+            class="item"
+            @click="handleChooseGenre(genre)"
+          >
             {{ genre.name }}
           </div>
         </div>
@@ -96,7 +101,9 @@ import { getDetailCommic } from "@/service/apiComic";
 import { useLoadingStore } from "@/store/loading";
 import { formatNumber } from "@/utils/format";
 import store from "@/store";
+import { useGenreStore } from "@/store/genre";
 import { historyAddComic, historyDeleteComic } from "../../utils/indexedDb";
+import cardbg from "@/assets/images/cardbg.jpg";
 
 const route = useRouter();
 const router = useRoute();
@@ -110,6 +117,12 @@ const listChapter = ref();
 const historyDb = ref();
 const isRead = ref(false);
 const currentChapterId = ref();
+
+const { setGenreName } = useGenreStore(store);
+
+const replaceByDefault = () => {
+  comicDetail.value.thumbnail = cardbg;
+};
 
 const fetchData = async (id) => {
   startProgress();
@@ -137,6 +150,14 @@ watch(
     listChapterRange.value = result;
   }
 );
+
+const handleChooseGenre = (genre) => {
+  setGenreName(genre.name);
+  route.push({
+    name: "GenrePage",
+    params: { genreId: genre.id, genreName: genre.name },
+  });
+};
 const getHistoryComics = () => {
   const db = window.db;
   const trans = db.transaction("history", "readwrite");

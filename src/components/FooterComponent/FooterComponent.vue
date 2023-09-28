@@ -7,8 +7,8 @@
       <div class="title">COMICBOX</div>
     </div>
     <div class="description">
-      If you too want to get excited over manga heroes's great performances with
-      other readers all over the world, Mangabox is the best place for you
+      If you too want to get excited over comic heroes's great performances with
+      other readers all over the world, Comicbox is the best place for you
     </div>
     <div class="link">
       <div class="link-item">Help/FAQ</div>

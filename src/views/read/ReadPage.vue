@@ -32,7 +32,7 @@
           <p
             v-for="chapter in comicData.chapters"
             :key="chapter.id"
-            @click="handleChooseChapter(chapter.id)"
+            @click="handleChooseChapter(chapter)"
           >
             {{ chapter.name }}
           </p>
@@ -62,11 +62,7 @@
         <arrow-left :width="'24'" :color="'#fff'" />
       </div>
       <div class="chapter">
-        <input
-          type="text"
-          placeholder="Chapter ..."
-          :value="chapterName ? chapterName : 'Chapter 99'"
-        />
+        <input type="text" placeholder="Chapter ..." :value="chapterName" />
         <div class="icon">
           <arrow-up
             v-if="isShow"
@@ -85,7 +81,7 @@
           <p
             v-for="chapter in comicData.chapters"
             :key="chapter.id"
-            @click="handleChooseChapter(chapter.id)"
+            @click="handleChooseChapter(chapter)"
           >
             {{ chapter.name }}
           </p>
@@ -124,7 +120,7 @@ const isScroll = ref(false);
 const id = ref(route.params.id);
 const chapterId = ref(route.params.chapterId);
 const comicData = ref();
-const chapterName = ref();
+const chapterName = ref("Chương 1");
 const isLoaded = ref(false);
 const thumbnail = ref();
 
@@ -189,17 +185,17 @@ watch(
 
 const handleChooseChapter = (chapter) => {
   close();
+  chapterName.value = chapter.name;
   isLoaded.value = false;
-  chapterId.value = chapter;
+  chapterId.value = chapter.id;
   handleScrollTop();
-  let chapterName = comicData.value.chapters.find((i) => i.id == chapter).name;
   historyDeleteComic(id.value);
   historyAddComic({
     id: id.value,
-    chapterId: chapter,
+    chapterId: chapter.id,
     thumbnail: thumbnail.value,
     title: comicData.value.comic_name,
-    chapterName: chapterName,
+    chapterName: chapter.name,
   });
 };
 

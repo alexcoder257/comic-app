@@ -21,12 +21,11 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 40px;
-    row-gap: 120px;
     padding: 0 9% 120px 9%;
     .commic-item {
       cursor: pointer;
       width: 160px;
-      height: 240px;
+      min-height: 240px;
       .thumbnail {
         margin-bottom: 8px;
         overflow: hidden;
@@ -45,7 +44,6 @@
         font-weight: 500;
         margin-bottom: 4px;
         margin-bottom: 12px;
-        height: 40px;
       }
       .chapter {
         color: $primary;

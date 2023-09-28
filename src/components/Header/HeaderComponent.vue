@@ -228,18 +228,34 @@ const queryString = computed(() =>
   )
 );
 
+const debounceDelay = 300;
+
+const debounce = (callback, delay) => {
+  let timerId;
+  return function () {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      callback();
+    }, delay);
+  };
+};
+
 const fetchData = async () => {
   const res = await getSearchSuggest(queryString.value);
   listComic.value = res;
 };
 
+const debounceSearch = debounce(() => {
+  fetchData();
+}, debounceDelay);
+
 watch(
-  () => inputQuery.value,
+  () => [inputQuery.value, debounceSearch],
   () => {
     if (inputQuery.value !== "") {
       isShowDropdown.value = true;
       open();
-      fetchData();
+      debounceSearch();
     } else {
       close();
       isShowDropdown.value = false;
