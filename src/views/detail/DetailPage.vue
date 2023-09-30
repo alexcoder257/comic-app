@@ -135,6 +135,14 @@ const fetchData = async (id) => {
 };
 
 watch(
+  () => router.params.id,
+  () => {
+    if (router.fullPath.includes("detail")) {
+      fetchData(router.params.id);
+    }
+  }
+);
+watch(
   () => totalChapter.value,
   () => {
     let counter = 0;

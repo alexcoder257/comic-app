@@ -264,7 +264,7 @@ watch(
 );
 
 const handleRedirectHistory = () => {
-  router.push({ name: "History" });
+  router.push("/history");
   close();
 };
 

@@ -4,13 +4,21 @@ const DetailPage = () => import("@/views/detail/DetailPage.vue");
 const ReadPage = () => import("@/views/read/ReadPage.vue");
 const GenrePage = () => import("@/views/genres/GenrePage.vue");
 const HistoryPage = () => import("@/views/history/HistoryPage.vue");
-const ErrorPage = () => import("@/views/error/ErrorPage.vue");
+// const ErrorPage = () => import("@/views/error/ErrorPage.vue");
 
 const routes = [
   {
     path: "/",
     component: HomePage,
     name: "HomePage",
+    meta: {
+      layout: "default",
+    },
+  },
+  {
+    path: "/history",
+    component: HistoryPage,
+    name: "HistoryPage",
     meta: {
       layout: "default",
     },
@@ -39,22 +47,14 @@ const routes = [
       layout: "default",
     },
   },
-  {
-    path: "/history",
-    component: HistoryPage,
-    name: "History",
-    meta: {
-      layout: "default",
-    },
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    component: ErrorPage,
-    name: "not-found",
-    meta: {
-      layout: "default",
-    },
-  },
+  // {
+  //   path: "/:pathMatch(.*)*",
+  //   component: ErrorPage,
+  //   name: "not-found",
+  //   meta: {
+  //     layout: "default",
+  //   },
+  // },
 ];
 
 const router = createRouter({

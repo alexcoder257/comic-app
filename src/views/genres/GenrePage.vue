@@ -1,5 +1,5 @@
 <template>
-  <div class="genre-container">
+  <div v-if="listComic" class="genre-container">
     <div class="title">GENRES: {{ getGenreName }}</div>
     <div class="commic-container">
       <div
@@ -68,16 +68,18 @@ const fetchData = async () => {
 };
 
 watch(
-  () => [route.params.genreId, currentPage.value],
+  () => [genreId.value, currentPage.value],
   () => {
-    genreId.value = route.params.genreId;
     fetchData();
+  },
+  {
+    deep: true,
   }
 );
 const handleScrollTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
-onMounted(async () => {
+onMounted(() => {
   fetchData();
 });
 
