@@ -1,9 +1,9 @@
 <template>
   <div class="header-container">
     <div class="header-left">
-      <div class="logo">
+      <div class="logo" @click="handleRedirectHome">
         <v-lazy-image :src="logo" />
-        <router-link to="/" class="title">COMICBOX</router-link>
+        <p class="title">COMICBOX</p>
       </div>
       <div class="list-genre">
         <div
@@ -284,6 +284,10 @@ const handleChooseGenre = (item) => {
   });
   isShowDropdown.value = false;
   close();
+};
+
+const handleRedirectHome = () => {
+  router.push({ name: "HomePage" });
 };
 
 const handleChooseComic = (item) => {

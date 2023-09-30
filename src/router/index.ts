@@ -4,6 +4,7 @@ const DetailPage = () => import("@/views/detail/DetailPage.vue");
 const ReadPage = () => import("@/views/read/ReadPage.vue");
 const GenrePage = () => import("@/views/genres/GenrePage.vue");
 const HistoryPage = () => import("@/views/history/HistoryPage.vue");
+const ErrorPage = () => import("@/views/error/ErrorPage.vue");
 
 const routes = [
   {
@@ -15,7 +16,7 @@ const routes = [
     },
   },
   {
-    path: "/:id",
+    path: "/comic/:id",
     component: DetailPage,
     name: "DetailPage",
     meta: {
@@ -42,6 +43,14 @@ const routes = [
     path: "/history",
     component: HistoryPage,
     name: "History",
+    meta: {
+      layout: "default",
+    },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: ErrorPage,
+    name: "not-found",
     meta: {
       layout: "default",
     },

@@ -8,7 +8,7 @@ const apiClient = axios.create({
   baseURL,
   withCredentials: false,
   responseType: "json",
-  timeout: 20000,
+  // timeout: 20000,
 });
 const apiClientDownload = axios.create({
   baseURL,
