@@ -16,7 +16,7 @@ const routes = [
     },
   },
   {
-    path: "/comic/:id",
+    path: "/detail/:id",
     component: DetailPage,
     name: "DetailPage",
     meta: {
