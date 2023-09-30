@@ -114,10 +114,21 @@ watch(
     deep: true,
   }
 );
+const counter = ref(1);
+
+watch(
+  () => counter.value,
+  () => {
+    if (counter.value > 5) {
+      handleNextChapter();
+      counter.value = 0;
+    }
+  }
+);
 
 const fetchData = async () => {
   currentPage.value = 1;
-  page.value = 1;
+  page.value = 0;
   try {
     const res = await getSingleChapter({
       comicId: id.value,
@@ -126,6 +137,7 @@ const fetchData = async () => {
     page.value = res.images.length;
     if (page.value === 0) {
       fetchData();
+      counter.value += 1;
     }
     comicData.value = res;
     chapterName.value = res.chapter_name;
@@ -143,6 +155,7 @@ const fetchDetail = async () => {
 onMounted(() => {
   fetchData();
   fetchDetail();
+  counter.value = 0;
 });
 
 const handleRedirect = () => {
@@ -167,6 +180,7 @@ watch(
 
 const handleChooseChapter = (chapter) => {
   close();
+  counter.value = 0;
   chapterName.value = chapter.name;
   chapterId.value = chapter.id;
   historyDeleteComic(id.value);
@@ -181,6 +195,7 @@ const handleChooseChapter = (chapter) => {
 
 const handleNextChapter = () => {
   close();
+  counter.value = 0;
   if (comicData.value && chapterId.value) {
     const idx = comicData.value.chapters.findIndex(
       (item) => item.id == chapterId.value
@@ -204,6 +219,7 @@ const handleNextChapter = () => {
 
 const handleBackChapter = () => {
   close();
+  counter.value = 0;
   if (comicData.value && chapterId.value) {
     const idx = comicData.value.chapters.findIndex(
       (item) => item.id == chapterId.value
