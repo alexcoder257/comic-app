@@ -2,7 +2,7 @@
 
 .category-container {
   background-color: $bg;
-  padding: 0 9% 62px 9%;
+  padding: 0 9% 100px 9%;
   overflow: hidden;
   position: relative;
   .content {
@@ -130,7 +130,7 @@
     background-color: $primary;
     padding: 12px 8px;
     border-radius: 24px;
-    bottom: 0;
+    bottom: 32px;
     left: 0;
     right: 0;
     z-index: 10;

@@ -3,23 +3,11 @@
     <div class="title">NEW RELEASED COMIC</div>
     <div class="comic-container">
       <swiper
-        :lazy="true"
         :slides-per-view="6"
-        :breakpoints="{
-          1536: { slidesPerView: 7 },
-          1280: { slidesPerView: 5 },
-          1024: { slidesPerView: 4 },
-          768: { slidesPerView: 3 },
-          640: { slidesPerView: 2 },
-          475: { slidesPerView: 2 },
-          100: { slidesPerView: 1 },
-        }"
+        :breakpoints="breakpoints"
         :space-between="24"
-        :centeredSlides="false"
-        :autoplay="{
-          delay: 3000,
-          disableOnInteraction: false,
-        }"
+        :centered-slides="false"
+        :autoplay="autoplayOptions"
         :navigation="true"
         :modules="modules"
       >
@@ -53,34 +41,32 @@
 </template>
 
 <script lang="ts">
-import Eyes from "@/assets/icons/Eyes.vue";
-import { stringify } from "qs";
-import { computed, onMounted, ref } from "vue";
-import { STATUS } from "@/constants/ComicConstants";
-import { getNewComic } from "@/service/apiComic";
-import { formatNumber } from "@/utils/format";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/swiper-bundle.css";
+import Eyes from "@/assets/icons/Eyes.vue";
+import { stringify } from "qs";
+import { getTopAllComic } from "@/service/apiComic";
+import { formatNumber } from "@/utils/format";
 import cardbg from "@/assets/images/cardbg.jpg";
+import { STATUS } from "@/constants/ComicConstants";
 
 export default {
   components: { Eyes, Swiper, SwiperSlide },
   setup() {
-    const listComic = ref();
-
-    const replaceByDefault = (e) => {
-      e.target.src = cardbg;
-    };
-
+    const listComic = ref<any[]>([]);
     const router = useRouter();
+
+    const replaceByDefault = (e: Event) => {
+      const target = e.target as HTMLImageElement;
+      target.src = cardbg;
+    };
 
     const pagination = ref({
       page: 1,
-      status: STATUS.ALL,
+      status: STATUS.COMPLETED,
     });
 
     const queryString = computed(() =>
@@ -95,10 +81,12 @@ export default {
     );
 
     const fetchData = async () => {
-      // startProgress();
-      const res = await getNewComic(queryString.value);
-      // stopProgress();
-      listComic.value = res.comics;
+      try {
+        const res = await getTopAllComic(queryString.value);
+        listComic.value = res.comics;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     onMounted(() => {
@@ -109,12 +97,29 @@ export default {
       router.push({ name: "DetailPage", params: { id: item.id } });
     };
 
+    const breakpoints = {
+      1536: { slidesPerView: 7 },
+      1280: { slidesPerView: 5 },
+      1024: { slidesPerView: 4 },
+      768: { slidesPerView: 3 },
+      640: { slidesPerView: 2 },
+      475: { slidesPerView: 2 },
+      100: { slidesPerView: 1 },
+    };
+
+    const autoplayOptions = {
+      delay: 3000,
+      disableOnInteraction: false,
+    };
+
     return {
-      replaceByDefault,
       listComic,
+      replaceByDefault,
       formatNumber,
       handleViewDetail,
-      modules: [Autoplay, Pagination, Navigation],
+      breakpoints,
+      autoplayOptions,
+      modules: [Autoplay, Navigation], // Ensure this is correct
     };
   },
 };
@@ -122,20 +127,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/components/_new-released.scss";
-.comic-container ::v-deep(.swiper-button-next) {
-  --swiper-navigation-size: 16px;
-  --swiper-navigation-top-offset: 35%;
-  --swiper-navigation-sides-offset: 10px;
-  font-weight: 700;
-  color: #fff;
-  background-color: #e6052e;
-  padding: 20px;
-  border-radius: 50%;
-  opacity: 0.5;
-  &:hover {
-    opacity: 1;
-  }
-}
+
+.comic-container ::v-deep(.swiper-button-next),
 .comic-container ::v-deep(.swiper-button-prev) {
   --swiper-navigation-size: 16px;
   --swiper-navigation-top-offset: 35%;
@@ -146,6 +139,7 @@ export default {
   padding: 20px;
   border-radius: 50%;
   opacity: 0.5;
+
   &:hover {
     opacity: 1;
   }

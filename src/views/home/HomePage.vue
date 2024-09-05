@@ -3,8 +3,8 @@
     <slider-component />
     <new-released />
     <category />
-    <sample :title="'BOY COMICS'" />
-    <sample :title="'GIRL COMICS'" />
+    <!-- <sample :title="'BOY COMICS'" />
+    <sample :title="'GIRL COMICS'" /> -->
     <popular />
     <daily />
     <contact />
@@ -28,5 +28,8 @@ import FooterComponent from "@/components/FooterComponent/FooterComponent.vue";
   width: 100vw;
   height: 100vh;
   background-color: #000;
+  // display: flex;
+  // flex-direction: column;
+  // gap:32px
 }
 </style>
